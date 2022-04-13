@@ -1,13 +1,13 @@
 import PausePresentationTwoToneIcon from '@material-ui/icons/PausePresentationTwoTone';
 import { TableTemplate } from 'components';
-import { useContractsState } from 'hooks';
+import { useConfigurationState } from 'hooks';
 import moment from 'moment';
 import { useStore } from 'react-hookstore';
 import { MODAL_STORE } from 'store';
-import { ContractData, ContractsState, ModalState } from 'types';
+import { ConfigurationData, ConfigurationState, ModalState } from 'types';
 
 interface Column {
-  id: keyof ContractData; 
+  id: keyof ConfigurationData; 
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -52,7 +52,7 @@ const columns: Column[] = [
 
 
 const ContractsTable = () => {
-	const state: ContractsState = useContractsState();
+  const state: ConfigurationState = useConfigurationState();
 
   return (
 		<TableTemplate data={state.data} columns={columns} />

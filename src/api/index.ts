@@ -1,4 +1,5 @@
 import * as ACHAPI from "./ach";
 import * as ContractsAPI from "./contracts";
+import * as ConfigurationAPI from "./configuration";
 
-export { ContractsAPI, ACHAPI };
+export { ContractsAPI, ACHAPI, ConfigurationAPI };

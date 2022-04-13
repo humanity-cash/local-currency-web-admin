@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 
 export type AxiosPromiseResponse<T = unknown> = AxiosResponse<T>;
 
-export interface ContractData {
+export interface ConfigurationData {
   name: string;
   address: string;
   deployedAt: number;
@@ -10,8 +10,8 @@ export interface ContractData {
   version: number;
 }
 
-export interface ContractsState {
-  data: ContractData[];
+export interface ConfigurationState {
+  data: ConfigurationData[];
 }
 
 export interface ModalState {
@@ -105,6 +105,18 @@ export interface IBlockchainTransaction {
   blockNumber: number;
   timestamp: number;
   type: "Transfer In" | "Transfer Out" | "Deposit" | "Withdraw" | "Transfer";
+}
+
+export interface IHealth {
+  blockNumber: number;
+  chainId: number;
+  nodeInfo: string;
+  token: string;
+  controller: string;
+  walletCount: string;
+  owner: string;
+  walletFactory: string;
+  controllerStatus: "ACTIVE" | "INACTIVE";
 }
 
 export interface ACHDataState {

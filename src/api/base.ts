@@ -1,8 +1,7 @@
 import axios from "axios";
 
 /**ENV! */
-// const CORE_API_URL = "https://alfajores.api.humanity.cash";
-const CORE_API_URL = "https://staging.api.humanity.cash";
+const CORE_API_URL = "https://api.humanity.cash";
 const httpRequest = axios.create({
   baseURL: CORE_API_URL,
 });
