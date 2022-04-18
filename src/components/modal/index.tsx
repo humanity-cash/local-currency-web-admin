@@ -9,15 +9,28 @@ import { MODAL_STORE } from 'store';
 import { ModalState } from 'types';
 
 const MODAL_COMPONENTS: any = {
-  'TEST_MODAL': () => <div>Hello World</div>
+  'STOP_CONTRACT': () => 
+  	<div>
+	  <DialogContentText>Are you sure to stop contract?</DialogContentText>
+	</div>,
+  'START_CONTRACT': () => 
+  	<div>
+	  <DialogContentText>Are you sure to start contract?</DialogContentText>
+	</div>
+
 };
 
 const Modal = () => {
   const [modalState, setModalState]: [ModalState, any] = useStore(MODAL_STORE);
-  const { isOpen, type, modalProps } = modalState
+  const { isOpen, type, title, modalProps, confirmHandler } = modalState
   const ChildComponent = MODAL_COMPONENTS[type];
   const handleClose = () => {
-    setModalState({isOpen: false, type: '', modalProps: {}})
+	setModalState({...modalState, isOpen: false})
+  };
+
+  const handleConfirm = () => {
+	setModalState({...modalState, isOpen: false})
+	confirmHandler && confirmHandler()
   };
 
   return (
@@ -26,21 +39,16 @@ const Modal = () => {
 				open={isOpen}
 				onClose={handleClose}
 				aria-labelledby='form-dialog-title'>
-				<DialogTitle id='form-dialog-title'>Lorem Ipsum</DialogTitle>
+				<DialogTitle id='form-dialog-title'>{title}</DialogTitle>
 				<DialogContent>
-					<DialogContentText>
-						Lorem Ipsum is simply dummy text of the printing and
-						typesetting industry. Lorem Ipsum has been the
-						industry's standard dummy text ever since the 1500s
-					</DialogContentText>
-					{/* <ChildComponent {...modalProps} /> */}
+					<ChildComponent {...modalProps} />
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color='primary'>
 						Cancel
 					</Button>
-					<Button onClick={handleClose} color='primary'>
-						Stop Contract
+					<Button onClick={handleConfirm} color='primary'>
+						{type === 'STOP_CONTRACT' ? 'Stop Contract' : 'Start Contract'}
 					</Button>
 				</DialogActions>
 			</Dialog>

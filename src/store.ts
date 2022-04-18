@@ -31,8 +31,9 @@ const operatorStoreInitialState: OperatorDataState = {
 
 const modalStoreInitialState: ModalState = {
   isOpen: false,
+  title: '',
   modalProps: {},
-  type: "",
+  type: '',
 };
 
 createStore(CONTRACTS_STORE, contractsStoreInitialState);

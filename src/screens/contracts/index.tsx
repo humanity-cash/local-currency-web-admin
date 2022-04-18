@@ -1,3 +1,4 @@
+import { Slideshow } from '@material-ui/icons';
 import PausePresentationTwoToneIcon from '@material-ui/icons/PausePresentationTwoTone';
 import { TableTemplate } from 'components';
 import { useConfigurationState } from 'hooks';
@@ -14,13 +15,36 @@ interface Column {
   format?: (value: any) => any;
 }
 
-const Actions = () => {
+interface ActionProps {
+	status: boolean
+};
+
+const Actions = (props: ActionProps) => {
+  const { status } = props;
   const [, setModalState]: [ModalState, any] = useStore(MODAL_STORE);
+
+  const actionController = (status: boolean) => {
+    setModalState({
+      isOpen: true, 
+      type: status ? 'STOP_CONTRACT' : 'START_CONTRACT',
+      title: status ? 'Stop Contract' : 'Start Contract',
+      confirmHandler: () => {console.log(!status ? 'stop contract...' : 'start contract...')}
+    })
+  }
 
   return (
 		<div style={{ display: 'inline-flex' }}>
-			<div style={{ cursor: 'pointer' }} onClick={() => setModalState({isOpen: true, type: 'TEST_MODAL'})}>
-				<PausePresentationTwoToneIcon />
+      <div 
+        style={{ cursor: 'pointer' }} 
+        onClick={
+          () => {actionController(status)}
+        }
+      >
+        { status ?
+            <PausePresentationTwoToneIcon />
+          :
+            <Slideshow />
+        }
 			</div>
 		</div>
   );
@@ -43,10 +67,10 @@ const columns: Column[] = [
     format: (value: number) =>  value === undefined ? '' : value === 1 ? 'ACTIVE' : 'DISABLED'
   },
   {
-    id: 'name',
+    id: 'status',
     label: 'Actions',
     minWidth: 170,
-    format: (value: string) => value === 'Controller' ? <Actions /> : null
+    format: (value: number | undefined) => value === undefined ? null : <Actions status={value == 1} />
   },
 ];
 

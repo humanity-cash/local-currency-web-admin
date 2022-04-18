@@ -17,7 +17,9 @@ export interface ConfigurationState {
 export interface ModalState {
   type: string;
   isOpen: boolean;
+  title: string;
   modalProps: Record<string, unknown>;
+  confirmHandler?: () => any;
 }
 
 export interface BlockchainDataState {

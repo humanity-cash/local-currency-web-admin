@@ -58,7 +58,7 @@ interface TableProps {
 };
 
 const TableTemplate = (props: TableProps) => {
-	const { data, columns } = props;
+  const { data, columns } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
