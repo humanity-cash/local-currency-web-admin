@@ -92,7 +92,7 @@ const SIDE_BAR_OPTIONS = [
 		Icon: AccountBalanceTwoToneIcon,
 	},
 	{
-		text: 'Blockchain Transactions',
+		text: 'Transfers',
 		path: '/bc/transactions',
 		Icon: ViewListTwoToneIcon,
 	},
