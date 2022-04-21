@@ -1,26 +1,50 @@
+import { Slideshow } from '@material-ui/icons';
 import PausePresentationTwoToneIcon from '@material-ui/icons/PausePresentationTwoTone';
 import { TableTemplate } from 'components';
-import { useContractsState } from 'hooks';
+import { useConfigurationState } from 'hooks';
 import moment from 'moment';
 import { useStore } from 'react-hookstore';
 import { MODAL_STORE } from 'store';
-import { ContractData, ContractsState, ModalState } from 'types';
+import { ConfigurationData, ConfigurationState, ModalState } from 'types';
 
 interface Column {
-  id: keyof ContractData; 
+  id: keyof ConfigurationData; 
   label: string;
   minWidth?: number;
   align?: 'right';
   format?: (value: any) => any;
 }
 
-const Actions = () => {
+interface ActionProps {
+	status: boolean
+};
+
+const Actions = (props: ActionProps) => {
+  const { status } = props;
   const [, setModalState]: [ModalState, any] = useStore(MODAL_STORE);
+
+  const actionController = (status: boolean) => {
+    setModalState({
+      isOpen: true, 
+      type: status ? 'STOP_CONTRACT' : 'START_CONTRACT',
+      title: status ? 'Stop Contract' : 'Start Contract',
+      confirmHandler: () => {console.log(!status ? 'stop contract...' : 'start contract...')}
+    })
+  }
 
   return (
 		<div style={{ display: 'inline-flex' }}>
-			<div style={{ cursor: 'pointer' }} onClick={() => setModalState({isOpen: true, type: 'TEST_MODAL'})}>
-				<PausePresentationTwoToneIcon />
+      <div 
+        style={{ cursor: 'pointer' }} 
+        onClick={
+          () => {actionController(status)}
+        }
+      >
+        { status ?
+            <PausePresentationTwoToneIcon />
+          :
+            <Slideshow />
+        }
 			</div>
 		</div>
   );
@@ -43,16 +67,16 @@ const columns: Column[] = [
     format: (value: number) =>  value === undefined ? '' : value === 1 ? 'ACTIVE' : 'DISABLED'
   },
   {
-    id: 'name',
+    id: 'status',
     label: 'Actions',
     minWidth: 170,
-    format: (value: string) => value === 'Controller' ? <Actions /> : null
+    format: (value: number | undefined) => value === undefined ? null : <Actions status={value == 1} />
   },
 ];
 
 
 const ContractsTable = () => {
-	const state: ContractsState = useContractsState();
+  const state: ConfigurationState = useConfigurationState();
 
   return (
 		<TableTemplate data={state.data} columns={columns} />

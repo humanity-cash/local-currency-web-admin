@@ -1,4 +1,4 @@
-import { ACHData, BlockchainData, ContractData, UserData } from "types";
+import { ACHData, BlockchainData, ConfigurationData, UserData } from "types";
 
 const createMockContractsData = (
   name: string,
@@ -6,7 +6,7 @@ const createMockContractsData = (
   deployedAt: number,
   status: number | undefined,
   version: number
-): ContractData => {
+): ConfigurationData => {
   return { name, address, deployedAt, status, version };
 };
 

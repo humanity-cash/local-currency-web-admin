@@ -1,6 +1,6 @@
 import useACHData from "./useACHData";
 import useBlockchainData from "./useBlockchainData";
-import useContractsState from "./useContractsData";
+import useConfigurationState from "./useContractsData";
 import useUsersData from "./useUsersData";
 
-export { useUsersData, useContractsState, useACHData, useBlockchainData };
+export { useUsersData, useConfigurationState, useACHData, useBlockchainData };
