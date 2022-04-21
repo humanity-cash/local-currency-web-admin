@@ -1,4 +1,9 @@
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+	AuthenticationDetails,
+	CognitoUser,
+	CognitoUserPool,
+	CognitoUserSession
+} from "amazon-cognito-identity-js";
 import { NEW_PASSWORD_REQUIRED_ERROR } from 'consts';
 
 // const userPoolId = 
@@ -31,9 +36,24 @@ export async function getSession() {
 	const currentUser = userPool.getCurrentUser()
 
 	return new Promise(function (resolve, reject) {
-		currentUser?.getSession(function (err: any, session: any) {
-			if (err) {
+		currentUser?.getSession(function (err: any, session: CognitoUserSession | undefined) {
+			if (err || !session) {
 				reject(err)
+			} else if (!session.isValid) {
+				console.log(`Cognito: Session exists but token has expired. Using refreshToken to get new session...`);
+				const refreshToken = session?.getRefreshToken();                
+				currentUser?.refreshSession(refreshToken, (err, session) => {
+				// Error
+				if (err || !session){
+					console.log(`Cognito: Error attempting to get new session from refreshToken ${err}`);
+					reject(err)
+				}                  
+				// Success
+				else {
+					console.log(`Cognito: Successfully restored session using refreshToken`);
+					resolve(session)
+				}                 
+				});
 			} else {
 				resolve(session)
 			}
