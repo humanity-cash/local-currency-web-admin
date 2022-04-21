@@ -2,7 +2,7 @@ import { createStore } from "react-hookstore";
 import {
   ACHDataState,
   BlockchainDataState,
-  ContractsState,
+  ConfigurationState,
   ModalState,
   OperatorDataState
 } from "./types";
@@ -21,7 +21,7 @@ const BlockchainDataStoreInitialState: BlockchainDataState = {
   data: [],
 };
 
-const contractsStoreInitialState: ContractsState = {
+const contractsStoreInitialState: ConfigurationState = {
   data: [],
 };
 
@@ -31,8 +31,9 @@ const operatorStoreInitialState: OperatorDataState = {
 
 const modalStoreInitialState: ModalState = {
   isOpen: false,
+  title: '',
   modalProps: {},
-  type: "",
+  type: '',
 };
 
 createStore(CONTRACTS_STORE, contractsStoreInitialState);
