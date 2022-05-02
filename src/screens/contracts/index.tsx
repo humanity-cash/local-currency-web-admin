@@ -1,11 +1,48 @@
+import { useContext } from 'react';
 import { Slideshow } from '@material-ui/icons';
 import PausePresentationTwoToneIcon from '@material-ui/icons/PausePresentationTwoTone';
-import { TableTemplate } from 'components';
-import { useConfigurationState } from 'hooks';
+import { useConfigurationData } from 'hooks';
 import moment from 'moment';
 import { useStore } from 'react-hookstore';
 import { MODAL_STORE } from 'store';
-import { ConfigurationData, ConfigurationState, ModalState } from 'types';
+import { ConfigurationData, ModalState } from 'types';
+import {Paper, Grid, Switch, FormControlLabel} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
+import { IHealth } from '../../types';
+import { ConfigurationContext } from '../../context/configuration';
+
+
+const useStyles = makeStyles({
+  titleWrapper: {
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+	wrapper: {
+    padding: '24px',
+    paddingLeft: '18em',
+		display: 'grid',
+  },
+  title: {
+    textAlign: 'center'
+  },
+  itemTitle: {
+		display: 'grid',
+    padding: '12px',
+    fontSize: '16px',
+  },
+  itemDetail: {
+		display: 'grid',
+    padding: '12px',
+    fontSize: '14px',
+    color: 'gray'
+  },
+  activeSwitch: {
+    position: 'absolute',
+    right: 40,
+    top: 20
+  }
+});
 
 interface Column {
   id: keyof ConfigurationData; 
@@ -74,12 +111,89 @@ const columns: Column[] = [
   },
 ];
 
-
 const ContractsTable = () => {
-  const state: ConfigurationState = useConfigurationState();
+  const { healthData, onPause } = useContext(ConfigurationContext)
+	const classes = useStyles();
+
+  if( !healthData ) {
+    return null   // need update to loading
+  }
 
   return (
-		<TableTemplate data={state.data} columns={columns} />
+		<div className={classes.wrapper}>
+      <Paper>
+        <div className={classes.titleWrapper}>
+          <h1 className={classes.title}>Smart Contracts Configuration</h1>
+          <div
+            className={classes.activeSwitch}
+          >
+            <FormControlLabel
+              control={
+                <Switch 
+                  checked={healthData.controllerStatus === 'ACTIVE'}
+                  color="primary"
+                  onChange={(e) => {
+                    onPause(healthData.controllerStatus !== 'ACTIVE')
+                  }}
+                />
+              }
+              label={healthData.controllerStatus}
+              labelPlacement="start"
+            />
+          </div>
+        </div>
+        <Grid container>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Block Number</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.blockNumber}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Chain Id</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.chainId}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Node Info</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.nodeInfo}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Token</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.token}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Controller</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.controller}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Wallet Count</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.walletCount}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Owner</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.owner}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>Wallet Factory</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{healthData.walletFactory}</div>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
  );
 }
 

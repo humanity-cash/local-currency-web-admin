@@ -25,3 +25,14 @@ export const pauseAdmin = async (): Promise<string> => {
   }
 };
 
+export const unpauseAdmin = async (): Promise<string> => {
+  try {
+    const response = await BaseAPI.postRequest(ADMIN_UNPAUSE, {})
+
+    console.log(ADMIN_UNPAUSE, response)
+    return response?.data;
+  } catch (err) {
+    console.log("err", err);
+    return JSON.stringify(err);
+  }
+};
