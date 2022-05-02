@@ -11,9 +11,9 @@ import { ChangeEvent, useState } from 'react';
 
 const useStyles = makeStyles({
   root: {
-    width: '100%',
-		gridColumn: '2/7',
-		gridRow: '1/2'
+	width: '100%',
+	gridColumn: '2/7',
+	gridRow: '1/2'
   },
   container: {
     maxHeight: 540,
