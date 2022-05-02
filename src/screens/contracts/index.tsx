@@ -1,14 +1,12 @@
 import { useContext } from 'react';
 import { Slideshow } from '@material-ui/icons';
 import PausePresentationTwoToneIcon from '@material-ui/icons/PausePresentationTwoTone';
-import { useConfigurationData } from 'hooks';
 import moment from 'moment';
 import { useStore } from 'react-hookstore';
 import { MODAL_STORE } from 'store';
 import { ConfigurationData, ModalState } from 'types';
 import {Paper, Grid, Switch, FormControlLabel} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import { IHealth } from '../../types';
 import { ConfigurationContext } from '../../context/configuration';
 
 
