@@ -1,11 +1,13 @@
 import { TableTemplate } from 'components';
-import { useUsersData } from 'hooks';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { UserData } from 'types';
+import { useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../context/user';
 
 interface Column {
-	id: keyof UserData;
+  id: keyof UserData;
+  keyId?: string;
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -16,9 +18,11 @@ interface Column {
 
 const useColumns = () => {
 	const history = useHistory();
+	
 	const columns: Column[] = [
 		{
 			id: 'name',
+			keyId: 'blockchainAddress',
 			label: 'Name',
 			minWidth: 170,
 			clickable: true,
@@ -30,13 +34,13 @@ const useColumns = () => {
 			id: 'outstandingBalance',
 			label: 'Balance',
 			minWidth: 170,
-			format: (value: number) => value + ' B$',
+			format: (value: number) => value.toFixed(2) + ' B$',
 		},
 		{
 			id: 'lastLogin',
 			label: 'Last Login',
-			minWidth: 170,
-			format: (value: number) => moment().format(),
+			minWidth: 240,
+			format: (value: number) => value,
 		},
 		{
 			id: 'blockchainAddress',
@@ -63,9 +67,34 @@ const useColumns = () => {
 
 const UsersTable = () => {
 	const columns = useColumns();
-	const data: UserData[] = useUsersData();
+	const { users } = useContext(UserContext);
+	const [userData, setUserData] = useState<any[] | undefined>(undefined);
 
-	return <TableTemplate data={data} columns={columns} />;
+	useEffect(() => {
+		if(!users) {
+			setUserData(undefined)
+		} else {
+			setUserData(users.map((user, index) => {
+				console.log(moment(user.createdTimestamp * 1000))
+				return {
+					name: "John Doe",
+					email: "email@email.com",
+					dowllaId: user.userId,
+					outstandingBalance: user.availableBalance,
+					lastLogin: moment(user.createdTimestamp * 1000).format("yyyy-MM-DD HH:mm:ss"),
+					blockchainAddress: user.address,
+					address: "Holloway 89832, Boston",
+					type: "Personal/Business"
+				}
+			}))
+		}
+	}, [users])
+
+	if(!userData) {
+		return null
+	}
+
+	return <TableTemplate data={userData} columns={columns} />;
 };
 
 export default UsersTable;

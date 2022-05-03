@@ -7,6 +7,8 @@ export const STATS_WITHDRAWAL   = "/stats/withdrawal";
 export const STATS_OPERATOR     = "/stats/operator";
 export const STATS_TRANSFER     = "/stats/transfer";
 
+export const USERS              = "/users";
+
 export const HEALTH             = "/health";
 export const ADMIN_PAUSE        = "/admin/pause";
 export const ADMIN_UNPAUSE      = "/admin/unpause";

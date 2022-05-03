@@ -118,7 +118,7 @@ export interface IHealth {
   walletCount: string;
   owner: string;
   walletFactory: string;
-  controllerStatus: "ACTIVE" | "INACTIVE";
+  controllerStatus: "ACTIVE" | "PAUSED";
 }
 
 export interface ACHDataState {
@@ -127,6 +127,14 @@ export interface ACHDataState {
 
 export interface OperatorDataState {
   data: OperatorData[];
+}
+
+export interface IUser {
+  userId: string;
+  address: string;
+  createdBlock: string;
+  createdTimestamp: number;
+  availableBalance: number;
 }
 
 export enum UserTables {
