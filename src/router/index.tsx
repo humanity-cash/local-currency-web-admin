@@ -17,7 +17,7 @@ export const ProtectedRoutes = () => {
 				<Route path="/transaction/:id" exact component={() => <TransactionScreen />}/>
 				<Route path="/transaction/bc/:id" exact component={() => <BlockchainTransactionScreen />}/>
 				<Route path="/bank/:id" exact component={() => <BankScreen />}/>
-				<Route path="/user/:id" exact component={() => <UserScreen />}/>
+				<Route path="/user/:id" exact component={UserScreen}/>
 				<Route path="/ach/transactions" exact component={() => <TransactionsScreen.ACHTransactionsTable />}/>
 				<Route path="/bc/transactions" exact component={() => <TransactionsScreen.BlockchainTransactionsTable />}/>
 			</Switch>

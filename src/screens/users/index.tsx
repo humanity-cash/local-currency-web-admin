@@ -75,7 +75,6 @@ const UsersTable = () => {
 			setUserData(undefined)
 		} else {
 			setUserData(users.map((user, index) => {
-				console.log(moment(user.createdTimestamp * 1000))
 				return {
 					name: "John Doe",
 					email: "email@email.com",

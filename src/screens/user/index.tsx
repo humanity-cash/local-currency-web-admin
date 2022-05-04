@@ -3,6 +3,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ACHTransactionsTable } from 'screens/transactions';
 import BlockchainDataTable from 'screens/transactions/blockchain';
 import { UserTables } from 'types';
@@ -99,7 +100,12 @@ const useStyles = makeStyles({
 	},
 });
 
+interface RouteParams {
+	id: string
+}
+
 const User = () => {
+	const params = useParams<RouteParams>();
 	const [tableType, setTableType] = useState<UserTables>(UserTables.UserACHTRansactions);
 	const classes = useStyles();
 	const user = 'John Doe';
