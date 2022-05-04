@@ -22,7 +22,7 @@ const useColumns = () => {
 	const columns: Column[] = [
 		{
 			id: 'name',
-			keyId: 'blockchainAddress',
+			keyId: 'dowllaId',
 			label: 'Name',
 			minWidth: 170,
 			clickable: true,

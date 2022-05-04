@@ -31,15 +31,17 @@ const UserTableButtons = ({
 	currentTable: UserTables;
 }) => {
 	const classes = useButtonsStyles();
-	const [style, setStyle] = useState<{ ach: ButtonStyles; bc: ButtonStyles }>(
-		{ ach: outlined, bc: contained }
+	const [style, setStyle] = useState<{ deposit: ButtonStyles; withdrawal: ButtonStyles;  transfer: ButtonStyles }>(
+		{ deposit: outlined, withdrawal: contained, transfer: contained }
 	);
 
 	useEffect(() => {
-		if (currentTable === 1) {
-			setStyle({ ach: outlined, bc: contained });
+		if (currentTable === 0) {
+			setStyle({ deposit: contained, withdrawal: outlined, transfer: outlined });
+		} else if (currentTable === 1) {
+			setStyle({ deposit: outlined, withdrawal: contained, transfer: outlined });
 		} else {
-			setStyle({ ach: contained, bc: outlined });
+			setStyle({ deposit: outlined, withdrawal: outlined, transfer: contained });
 		}
 	}, [currentTable]);
 
@@ -49,19 +51,26 @@ const UserTableButtons = ({
 				color='primary'
 				aria-label='outlined primary button group'>
 				<Button
-					variant={style.ach}
+					variant={style.deposit}
 					onClick={() => {
 						console.log('here')
-						setTableType(UserTables.UserACHTRansactions);
+						setTableType(UserTables.UserDepositTransactions);
 					}}>
-					ACH Transactions
+					Deposits
 				</Button>
 				<Button
-					variant={style.bc}
+					variant={style.withdrawal}
 					onClick={() =>
-						setTableType(UserTables.UserBlockchainTransactions)
+						setTableType(UserTables.UserWithdrawalTransactions)
 					}>
-					Blockchain Transactions
+					Withdrawals
+				</Button>
+				<Button
+					variant={style.transfer}
+					onClick={() =>
+						setTableType(UserTables.UserTransferTransactions)
+					}>
+					Transfers
 				</Button>
 			</ButtonGroup>
 		</div>
@@ -106,7 +115,7 @@ interface RouteParams {
 
 const User = () => {
 	const params = useParams<RouteParams>();
-	const [tableType, setTableType] = useState<UserTables>(UserTables.UserACHTRansactions);
+	const [tableType, setTableType] = useState<UserTables>(UserTables.UserDepositTransactions);
 	const classes = useStyles();
 	const user = 'John Doe';
 	const bank = 'Bank Of';
