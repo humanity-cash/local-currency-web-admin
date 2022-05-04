@@ -138,6 +138,7 @@ export interface IUser {
 }
 
 export enum UserTables {
-  UserACHTRansactions,
-  UserBlockchainTransactions,
+  UserDepositTransactions,
+  UserWithdrawalTransactions,
+  UserTransferTransactions,
 }
