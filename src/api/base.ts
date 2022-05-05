@@ -11,7 +11,6 @@ httpRequest.interceptors.request.use(async function (config) {
   try {
     const session: any = await getSession()
     config.headers.authorization = session.accessToken.jwtToken;
-    console.log('token ==========> ', config.headers.authorization)
   } catch (err: any) {
     console.log(`get session error...: ${err}`);
   }

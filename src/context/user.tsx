@@ -8,20 +8,22 @@ export enum UserApiStatus {
 
 export interface IUserContext {
   loading?: boolean,
-  users?: IUser[] | undefined,
-  getUsers: any
+  users?: any | undefined,
+  getUsers: any,
+  getUserDetail: any
 }
 
 const defaultState: IUserContext = {
   loading: true,
-  getUsers: (userId: string) => {console.log(userId)}
+  getUsers: () => {console.log("get users")},
+  getUserDetail: (dwollaId: string) => {console.log(dwollaId)}
 };
 
 export const UserContext = React.createContext(defaultState)
 
 const UserProvider: React.FunctionComponent = ({ children }) => {
   const [loading, setLoading] = useState(true)
-  const [users, setUsers] = useState<IUser[] | undefined>(undefined)
+  const [users, setUsers] = useState<any | undefined>(undefined)
 
   useEffect(() => {
     getUsers()
@@ -34,10 +36,22 @@ const UserProvider: React.FunctionComponent = ({ children }) => {
     setLoading(false)
   }
 
+  const getUserDetail = async (dwollaId: string) => {
+    setLoading(true)
+    const temp = {...users}
+    const user = await UserAPI.getUserDetail(dwollaId)
+    if(user) {
+      temp[user.userId] = user
+    }
+    setUsers(temp)
+    setLoading(false)
+  }
+
   const state: IUserContext = {
     loading,
     users,
-    getUsers
+    getUsers,
+    getUserDetail
   }
 
   return <UserContext.Provider value={state}>{children}</UserContext.Provider>
