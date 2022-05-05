@@ -129,12 +129,29 @@ export interface OperatorDataState {
   data: OperatorData[];
 }
 
+export interface IBank {
+  bankName: string;
+  bankAccountType: string;
+  createdAt: string;
+  name: string;
+}
+
 export interface IUser {
   userId: string;
   address: string;
   createdBlock: string;
   createdTimestamp: number;
   availableBalance: number;
+  dwollaId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  type: string;
+  status: string;
+  created: string;
+  correlationId: string;
+  businessName: string;
+  bank?: IBank | undefined
 }
 
 export enum UserTables {

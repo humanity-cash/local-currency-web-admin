@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { UserData } from 'types';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/user';
+import { IUser } from '../../types';
 
 interface Column {
   id: keyof UserData;
@@ -22,9 +23,8 @@ const useColumns = () => {
 	const columns: Column[] = [
 		{
 			id: 'name',
-			keyId: 'dowllaId',
+			keyId: 'userId',
 			label: 'Name',
-			minWidth: 170,
 			clickable: true,
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
@@ -33,31 +33,21 @@ const useColumns = () => {
 		{
 			id: 'outstandingBalance',
 			label: 'Balance',
-			minWidth: 170,
-			format: (value: number) => value.toFixed(2) + ' B$',
-		},
-		{
-			id: 'lastLogin',
-			label: 'Last Login',
-			minWidth: 240,
-			format: (value: number) => value,
+			format: (value: number) => 'B$ ' + value.toFixed(2),
 		},
 		{
 			id: 'blockchainAddress',
 			label: 'Wallet Address',
-			minWidth: 170,
 			format: (value: string) => value,
 		},
-		{
-			id: 'address',
-			label: 'address',
-			minWidth: 170,
-			format: (value: string) => value,
-		},
+		// {
+		// 	id: 'address',
+		// 	label: 'address',
+		// 	format: (value: string) => value,
+		// },
 		{
 			id: 'type',
 			label: 'Type',
-			minWidth: 170,
 			format: (value: string) => value,
 		},
 	];
@@ -67,23 +57,28 @@ const useColumns = () => {
 
 const UsersTable = () => {
 	const columns = useColumns();
-	const { users } = useContext(UserContext);
+	const { users, getUsers } = useContext(UserContext);
 	const [userData, setUserData] = useState<any[] | undefined>(undefined);
 
 	useEffect(() => {
+		// getUsers()
+	}, [])
+
+	useEffect(() => {
 		if(!users) {
-			setUserData(undefined)
+			setUserData([])
 		} else {
-			setUserData(users.map((user, index) => {
+			setUserData(Object.keys(users).map((userId, index) => {
+				const user = users[userId]
 				return {
-					name: "John Doe",
-					email: "email@email.com",
-					dowllaId: user.userId,
+					name: user.correlationId.includes('business') ? user.businessName : `${user.firstName} ${user.lastName}`,
+					userId: user.userId,
+					email: user.email,
+					dowllaId: user.dwollaId,
 					outstandingBalance: user.availableBalance,
-					lastLogin: moment(user.createdTimestamp * 1000).format("yyyy-MM-DD HH:mm:ss"),
 					blockchainAddress: user.address,
 					address: "Holloway 89832, Boston",
-					type: "Personal/Business"
+					type: user.correlationId.includes('business') ? 'Business' : 'Personal'
 				}
 			}))
 		}
