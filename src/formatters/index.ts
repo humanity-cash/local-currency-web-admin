@@ -77,6 +77,10 @@ export const formatTransfers = (
       blockNumber: tx.blockNumber,
       timestamp: tx.timestamp * 1000,
       type: "Transfer",
+      fromName: tx.fromName,
+      toName: tx.toName,
+      fromDwollaUserId: tx.fromDwollaUserId,
+      toDwollaUserId: tx.toDwollaUserId,
     };
   });
 };

@@ -9,6 +9,9 @@ import BlockchainDataTable from 'screens/transactions/blockchain';
 import { UserTables } from 'types';
 import { UserContext } from '../../context/user';
 import { IUser } from '../../types';
+import UserDepositDataTable from './userDeposit';
+import UserWithdrawalDataTable from './userWithdrawal';
+import UserTransferDataTable from './userTransfers';
 
 const useButtonsStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -168,11 +171,11 @@ const User = () => {
 				/>
 			</div>
 			<div>
-				{tableType === 1 ? (
-					<BlockchainDataTable />
-				) : (
-					<ACHTransactionsTable />
-				)}
+				{tableType === 0 ? (
+					<UserDepositDataTable user={detailUser}/>
+				) : tableType === 1 ?(
+					<UserWithdrawalDataTable user={detailUser}/>
+				) : <UserTransferDataTable user={detailUser}/>}
 			</div>
 		</div>
 	);

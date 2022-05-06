@@ -1,7 +1,7 @@
 import { USERS } from "consts";
 import * as BaseAPI from "../base";
 import { IUser, IBank } from '../../types';
-import { formatUsers, formatUser, formatBank } from '../../formatters/index';
+import { formatUsers, formatUser, formatBank, formatDeposits, formatWithdrawals, formatTransfers } from '../../formatters/index';
 
 export const getAllUsers = async (): Promise<any> => {
   try {
@@ -30,12 +30,42 @@ export const getUserDetail = async (dwollaId: string): Promise<IUser | undefined
     const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}`);
     const user = formatUser(response.data[0]);
 
-    const bank = await getFundingSource(dwollaId)
-    user.bank = bank
-
     return user
   } catch (err) {
     console.log("err", err);
     return undefined;
   }
 };
+
+export const getUserDeposits = async (dwollaId: string) => {
+  try {
+    const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}/deposit`);
+
+    return formatDeposits(response) || [];
+  } catch (err) {
+    console.log("err", err);
+    return undefined;
+  }
+}
+
+export const getUserWithdrawals = async (dwollaId: string) => {
+  try {
+    const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}/withdraw`);
+
+    return formatWithdrawals(response) || [];
+  } catch (err) {
+    console.log("err", err);
+    return undefined;
+  }
+}
+
+export const getUserTransfers = async (dwollaId: string) => {
+  try {
+    const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}/transfer`);
+
+    return formatTransfers(response) || [];
+  } catch (err) {
+    console.log("err", err);
+    return undefined;
+  }
+}

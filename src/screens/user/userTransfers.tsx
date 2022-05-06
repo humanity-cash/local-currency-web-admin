@@ -1,12 +1,12 @@
 import { FilterTable } from 'components';
-import { useACHData } from 'hooks';
+import { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
-import { ACHData, ACHDataState } from 'types';
-import { iconStatus } from 'utils';
+import { IUser } from '../../types';
+import { UserContext } from '../../context/user';
 
 interface Column {
-  name: keyof ACHData
+  name: keyof IUserTransferColumn;
   title: string;
   minWidth?: number;
   align?: 'right';
@@ -19,77 +19,97 @@ const useColumns = () => {
 	const history = useHistory();
 	const columns: Column[] = [
 		{
-			name: 'transactionId',
-			title: 'ID',
-			minWidth: 100,
+			name: 'transactionHash',
+			title: 'Hash',
 			clickable: true,
-			onClick: (value: string) => history.push(`/transaction/${value}`),
-		},
-		{ name: 'type', title: 'Type', minWidth: 100 },
-		{
-			name: 'username',
-			title: 'User',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/user/${value}`),
+			onClick: (value: string) => history.push(`/transaction/bc/${value}`),
 		},
 		{
-			name: 'createdAt',
-			title: 'Created At',
-			minWidth: 100,
-			format: (value: number) => moment().format(),
+			name: 'fromName',
+			title: 'From',
 		},
 		{
-			name: 'confirmedAt',
-			title: 'Confirmed At',
-			minWidth: 100,
-			format: (value: number) => moment().format(),
+			name: 'toName',
+			title: 'To',
 		},
 		{
-			name: 'userBank',
-			title: 'User Bank',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
+			name: 'fromAddress',
+			title: 'From Address',
 		},
 		{
-			name: 'berksharesBank',
-			title: 'Berkshares Bank',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
+			name: 'toAddress',
+			title: 'To Address',
+		},
+		{
+			name: 'type',
+			title: 'Type',
 		},
 		{
 			name: 'amount',
 			title: 'Amount',
-			minWidth: 100,
-			format: (value: number) => value.toLocaleString('en-US') + ' $',
+			format: (value: number) => 'B$ ' + value,
 		},
 		{
-			name: 'status',
-			title: 'Status',
-			minWidth: 100,
-			format: (value: any) => iconStatus(value),
+			name: 'createdAt',
+			title: 'Created At',
+			format: (value: number) => moment().format(),
+		},
+		{
+			name: 'blockNumber',
+			title: 'Blocks Confirmed',
 		},
 	];
 
 	return columns;
 };
 
-const UserTransferDataTable = () => {
-	const state: ACHDataState = useACHData();
-	const columns = useColumns(); 
+interface IUserTransferColumn {
+	transactionHash: string;
+	fromName: string;
+	toName: string;
+	fromAddress: string;
+	toAddress: string;
+	type: string;
+	amount: string;
+	createdAt: string;
+	blockNumber: number;
+}
+  
+export interface UserTransferDataTableProps {
+	user: IUser
+}
 
-  return (
-		<div
-			style={{
-				paddingLeft: '19em',
-				paddingTop: '2em',
-				paddingRight: '2em',
-			}}>
-			<FilterTable rows={state.data} columns={columns} />
+const UserTransferDataTable = (props: UserTransferDataTableProps) => {
+	const { user } = props
+	const { users } = useContext(UserContext)
+	const columns: Column[] = useColumns();
+	const [data, setData] = useState<IUserTransferColumn[]>([])
+
+	useEffect(() => {
+		if(user.transfers) {
+			setData(
+				user.transfers.map((tx) => {
+					return {
+						transactionHash: tx.transactionHash,
+						fromName: tx.fromName,
+						toName: tx.toName,
+						fromAddress: tx.fromAddress,
+						toAddress: tx.toAddress,
+						type: tx.type,
+						amount: tx.value,
+						createdAt: moment(tx.timestamp).format("yyyy-MM-DD HH:mm:ss"),
+						blockNumber: tx.blockNumber
+					}
+				})
+			)
+		}
+	}, [user])
+
+	return (
+		<div style={{paddingLeft: '19em', paddingTop: '2em',  paddingRight: '2em'}}>
+			<FilterTable rows={data} columns={columns} />
 		</div>
-  );
+	);
 }
 
 export default UserTransferDataTable;

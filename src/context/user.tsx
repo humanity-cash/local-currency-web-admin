@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { IUser } from '../types';
 import { UserAPI } from "api";
 
 export enum UserApiStatus {
@@ -40,9 +39,19 @@ const UserProvider: React.FunctionComponent = ({ children }) => {
     setLoading(true)
     const temp = {...users}
     const user = await UserAPI.getUserDetail(dwollaId)
+    const bank = await UserAPI.getFundingSource(dwollaId)
+    const deposits = await UserAPI.getUserDeposits(dwollaId)
+    const withdrawals = await UserAPI.getUserWithdrawals(dwollaId)
+    const transfers = await UserAPI.getUserTransfers(dwollaId)
+
     if(user) {
+      user.bank = bank
+      user.deposits = deposits
+      user.withdraws = withdrawals
+      user.transfers = transfers
       temp[user.userId] = user
     }
+    
     setUsers(temp)
     setLoading(false)
   }
