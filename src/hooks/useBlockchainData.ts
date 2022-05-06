@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useStore } from "react-hookstore";
-import { MockBCData } from "../mock";
 import { BLOCKCHAIN_DATA_STORE } from "../store";
 import { BlockchainDataState } from "../types";
 import { ACHAPI, ContractsAPI } from "api";

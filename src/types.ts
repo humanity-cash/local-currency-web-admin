@@ -50,8 +50,8 @@ export interface BlockchainData {
   fromUser: Username;
   toUser: Username;
   type: "Deposit" | "Withdraw" | "Transfer In" | "Transfer Out";
-  createdAt: Time;
-  amount: number;
+  createdAt: string;
+  amount: string;
   blocksConfirmed: number;
 }
 
@@ -107,6 +107,10 @@ export interface IBlockchainTransaction {
   blockNumber: number;
   timestamp: number;
   type: "Transfer In" | "Transfer Out" | "Deposit" | "Withdraw" | "Transfer";
+  fromName: string;
+  toName: string;
+  fromDwollaUserId: string;
+  toDwollaUserId: string;
 }
 
 export interface IHealth {
@@ -151,7 +155,10 @@ export interface IUser {
   created: string;
   correlationId: string;
   businessName: string;
-  bank?: IBank | undefined
+  bank?: IBank | undefined;
+  deposits?: IACHTransaction[] | undefined;
+  withdraws?: IACHTransaction[] | undefined;
+  transfers?: IBlockchainTransaction[] | undefined;
 }
 
 export enum UserTables {

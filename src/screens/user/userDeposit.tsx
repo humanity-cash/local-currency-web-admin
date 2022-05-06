@@ -1,11 +1,12 @@
 import { FilterTable } from 'components';
-import { useBlockchainData } from 'hooks';
+import { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
-import { BlockchainData, BlockchainDataState } from 'types';
+import { IUser } from '../../types';
+import { UserContext } from '../../context/user';
 
 interface Column {
-  name: keyof BlockchainData;
+  name: keyof IUserDepositColumn;
   title: string;
   minWidth?: number;
   align?: 'right';
@@ -20,77 +21,80 @@ const useColumns = () => {
 		{
 			name: 'transactionHash',
 			title: 'Hash',
-			minWidth: 100,
 			clickable: true,
 			onClick: (value: string) => history.push(`/transaction/bc/${value}`),
 		},
 		{
-			name: 'fromUser',
-			title: 'From',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/user/${value}`),
+			name: 'user',
+			title: 'User',
 		},
 		{
-			name: 'toUser',
-			title: 'To',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/user/${value}`),
-		},
-		{
-			name: 'from',
-			title: 'From Address',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => console.log('clicked'),
-		},
-		{
-			name: 'to',
-			title: 'To Address',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => console.log('clicked'),
-		},
-		{
-			name: 'type',
-			title: 'Type',
-			minWidth: 100,
-			format: (value: string) => value,
+			name: 'bank',
+			title: 'User Bank',
 		},
 		{
 			name: 'amount',
 			title: 'Amount',
-			minWidth: 100,
 			format: (value: number) => 'B$ ' + value,
 		},
 		{
 			name: 'createdAt',
 			title: 'Created At',
-			minWidth: 100,
 			format: (value: number) => moment().format(),
 		},
 		{
 			name: 'blocksConfirmed',
 			title: 'Blocks Confirmed',
-			minWidth: 100,
-			format: (value: number) => value
 		},
 	];
 
 	return columns;
 };
 
+interface IUserDepositColumn {
+	transactionHash: string;
+	user: string;
+	createdAt: string;
+	amount: string;
+	blocksConfirmed: number;
+	bank: string;
+	status: string;
+}
+  
+export interface UserDepositDataTableProps {
+	user: IUser
+}
 
-const UserDepositDataTable = () => {
+const UserDepositDataTable = (props: UserDepositDataTableProps) => {
+	const { user } = props
+	const { users } = useContext(UserContext)
 	const columns: Column[] = useColumns();
-	const state: BlockchainDataState = useBlockchainData();
+	const [data, setData] = useState<IUserDepositColumn[]>([])
 
-  return (
+	useEffect(() => {
+		if(user.deposits) {
+			setData(
+				user.deposits.map((dp) => {
+					const user = users[dp.userId]
+					return {
+						transactionHash: dp.transactionHash,
+						user: `${user.correlationId.includes('business') ? user.businessName : `${user.firstName} ${user.lastName}`}`,
+						createdAt: moment(dp.timestamp).format("yyyy-MM-DD HH:mm:ss"),
+						amount: dp.value,
+						blocksConfirmed: dp.blockNumber,
+						bank: user.bank?.name ?? '',
+						status: 'Success'
+					}
+				})
+			)
+		}
+	}, [user])
+
+	return (
 		<div style={{paddingLeft: '19em', paddingTop: '2em',  paddingRight: '2em'}}>
-			<FilterTable rows={state.data} columns={columns} />
+			<FilterTable rows={data} columns={columns} />
 		</div>
-  );
+	);
 }
 
 export default UserDepositDataTable;

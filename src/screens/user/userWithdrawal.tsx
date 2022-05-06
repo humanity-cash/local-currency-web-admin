@@ -1,12 +1,12 @@
 import { FilterTable } from 'components';
-import { useACHData } from 'hooks';
+import { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
-import { ACHData, ACHDataState } from 'types';
-import { iconStatus } from 'utils';
+import { IUser } from '../../types';
+import { UserContext } from '../../context/user';
 
 interface Column {
-  name: keyof ACHData
+  name: keyof IUserWithdrawalColumn;
   title: string;
   minWidth?: number;
   align?: 'right';
@@ -19,77 +19,82 @@ const useColumns = () => {
 	const history = useHistory();
 	const columns: Column[] = [
 		{
-			name: 'transactionId',
-			title: 'ID',
-			minWidth: 100,
+			name: 'transactionHash',
+			title: 'Hash',
 			clickable: true,
-			onClick: (value: string) => history.push(`/transaction/${value}`),
+			onClick: (value: string) => history.push(`/transaction/bc/${value}`),
 		},
-		{ name: 'type', title: 'Type', minWidth: 100 },
 		{
-			name: 'username',
+			name: 'user',
 			title: 'User',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/user/${value}`),
 		},
 		{
-			name: 'createdAt',
-			title: 'Created At',
-			minWidth: 100,
-			format: (value: number) => moment().format(),
-		},
-		{
-			name: 'confirmedAt',
-			title: 'Confirmed At',
-			minWidth: 100,
-			format: (value: number) => moment().format(),
-		},
-		{
-			name: 'userBank',
+			name: 'bank',
 			title: 'User Bank',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
-		},
-		{
-			name: 'berksharesBank',
-			title: 'Berkshares Bank',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
 		},
 		{
 			name: 'amount',
 			title: 'Amount',
-			minWidth: 100,
-			format: (value: number) => value.toLocaleString('en-US') + ' $',
+			format: (value: number) => 'B$ ' + value,
 		},
 		{
-			name: 'status',
-			title: 'Status',
-			minWidth: 100,
-			format: (value: any) => iconStatus(value),
+			name: 'createdAt',
+			title: 'Created At',
+			format: (value: number) => moment().format(),
+		},
+		{
+			name: 'blocksConfirmed',
+			title: 'Blocks Confirmed',
 		},
 	];
 
 	return columns;
 };
 
-const UserWithdrawalDataTable = () => {
-	const state: ACHDataState = useACHData();
-	const columns = useColumns(); 
+interface IUserWithdrawalColumn {
+	transactionHash: string;
+	user: string;
+	createdAt: string;
+	amount: string;
+	blocksConfirmed: number;
+	bank: string;
+	status: string;
+}
+  
+export interface UserWithdrawalDataTableProps {
+	user: IUser
+}
 
-  return (
-		<div
-			style={{
-				paddingLeft: '19em',
-				paddingTop: '2em',
-				paddingRight: '2em',
-			}}>
-			<FilterTable rows={state.data} columns={columns} />
+const UserWithdrawalDataTable = (props: UserWithdrawalDataTableProps) => {
+	const { user } = props
+	const { users } = useContext(UserContext)
+	const columns: Column[] = useColumns();
+	const [data, setData] = useState<IUserWithdrawalColumn[]>([])
+
+	useEffect(() => {
+		if(user.withdraws) {
+			setData(
+				user.withdraws.map((dp) => {
+					const user = users[dp.userId]
+					return {
+						transactionHash: dp.transactionHash,
+						user: `${user.correlationId.includes('business') ? user.businessName : `${user.firstName} ${user.lastName}`}`,
+						createdAt: moment(dp.timestamp).format("yyyy-MM-DD HH:mm:ss"),
+						amount: dp.value,
+						blocksConfirmed: dp.blockNumber,
+						bank: user.bank?.name ?? '',
+						status: 'Success'
+					}
+				})
+			)
+		}
+	}, [user])
+
+	return (
+		<div style={{paddingLeft: '19em', paddingTop: '2em',  paddingRight: '2em'}}>
+			<FilterTable rows={data} columns={columns} />
 		</div>
-  );
+	);
 }
 
 export default UserWithdrawalDataTable;
