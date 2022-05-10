@@ -1,11 +1,14 @@
 import { TableTemplate } from 'components';
-import { useUsersData } from 'hooks';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { UserData } from 'types';
+import { useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../context/user';
+import { IUser } from '../../types';
 
 interface Column {
-	id: keyof UserData;
+  id: keyof UserData;
+  keyId?: string;
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -16,11 +19,12 @@ interface Column {
 
 const useColumns = () => {
 	const history = useHistory();
+	
 	const columns: Column[] = [
 		{
 			id: 'name',
+			keyId: 'userId',
 			label: 'Name',
-			minWidth: 170,
 			clickable: true,
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
@@ -29,31 +33,21 @@ const useColumns = () => {
 		{
 			id: 'outstandingBalance',
 			label: 'Balance',
-			minWidth: 170,
-			format: (value: number) => value + ' B$',
-		},
-		{
-			id: 'lastLogin',
-			label: 'Last Login',
-			minWidth: 170,
-			format: (value: number) => moment().format(),
+			format: (value: number) => 'B$ ' + value.toFixed(2),
 		},
 		{
 			id: 'blockchainAddress',
 			label: 'Wallet Address',
-			minWidth: 170,
 			format: (value: string) => value,
 		},
-		{
-			id: 'address',
-			label: 'address',
-			minWidth: 170,
-			format: (value: string) => value,
-		},
+		// {
+		// 	id: 'address',
+		// 	label: 'address',
+		// 	format: (value: string) => value,
+		// },
 		{
 			id: 'type',
 			label: 'Type',
-			minWidth: 170,
 			format: (value: string) => value,
 		},
 	];
@@ -63,9 +57,38 @@ const useColumns = () => {
 
 const UsersTable = () => {
 	const columns = useColumns();
-	const data: UserData[] = useUsersData();
+	const { users, getUsers } = useContext(UserContext);
+	const [userData, setUserData] = useState<any[] | undefined>(undefined);
 
-	return <TableTemplate data={data} columns={columns} />;
+	useEffect(() => {
+		// getUsers()
+	}, [])
+
+	useEffect(() => {
+		if(!users) {
+			setUserData([])
+		} else {
+			setUserData(Object.keys(users).map((userId, index) => {
+				const user = users[userId]
+				return {
+					name: user.correlationId.includes('business') ? user.businessName : `${user.firstName} ${user.lastName}`,
+					userId: user.userId,
+					email: user.email,
+					dowllaId: user.dwollaId,
+					outstandingBalance: user.availableBalance,
+					blockchainAddress: user.address,
+					address: "Holloway 89832, Boston",
+					type: user.correlationId.includes('business') ? 'Business' : 'Personal'
+				}
+			}))
+		}
+	}, [users])
+
+	if(!userData) {
+		return null
+	}
+
+	return <TableTemplate data={userData} columns={columns} />;
 };
 
 export default UsersTable;

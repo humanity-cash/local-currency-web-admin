@@ -50,8 +50,8 @@ export interface BlockchainData {
   fromUser: Username;
   toUser: Username;
   type: "Deposit" | "Withdraw" | "Transfer In" | "Transfer Out";
-  createdAt: Time;
-  amount: number;
+  createdAt: string;
+  amount: string;
   blocksConfirmed: number;
 }
 
@@ -107,6 +107,10 @@ export interface IBlockchainTransaction {
   blockNumber: number;
   timestamp: number;
   type: "Transfer In" | "Transfer Out" | "Deposit" | "Withdraw" | "Transfer";
+  fromName: string;
+  toName: string;
+  fromDwollaUserId: string;
+  toDwollaUserId: string;
 }
 
 export interface IHealth {
@@ -118,7 +122,7 @@ export interface IHealth {
   walletCount: string;
   owner: string;
   walletFactory: string;
-  controllerStatus: "ACTIVE" | "INACTIVE";
+  controllerStatus: "ACTIVE" | "PAUSED";
 }
 
 export interface ACHDataState {
@@ -129,7 +133,36 @@ export interface OperatorDataState {
   data: OperatorData[];
 }
 
+export interface IBank {
+  bankName: string;
+  bankAccountType: string;
+  createdAt: string;
+  name: string;
+}
+
+export interface IUser {
+  userId: string;
+  address: string;
+  createdBlock: string;
+  createdTimestamp: number;
+  availableBalance: number;
+  dwollaId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  type: string;
+  status: string;
+  created: string;
+  correlationId: string;
+  businessName: string;
+  bank?: IBank | undefined;
+  deposits?: IACHTransaction[] | undefined;
+  withdraws?: IACHTransaction[] | undefined;
+  transfers?: IBlockchainTransaction[] | undefined;
+}
+
 export enum UserTables {
-  UserACHTRansactions,
-  UserBlockchainTransactions,
+  UserDepositTransactions,
+  UserWithdrawalTransactions,
+  UserTransferTransactions,
 }

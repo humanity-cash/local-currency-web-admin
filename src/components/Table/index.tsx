@@ -13,10 +13,10 @@ const useStyles = makeStyles({
   root: {
 	width: '100%',
 	gridColumn: '2/7',
-	gridRow: '1/2'
+	gridRow: '1/5'
   },
   container: {
-    maxHeight: 540,
+    maxHeight: 700,
   },
 	wrapper: {
 		padding: '24px',
@@ -24,7 +24,8 @@ const useStyles = makeStyles({
 		display: 'grid',
 		gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
 		gridTemplateRows: '1fr 1fr 1fr',
-		height: '90vh'
+		height: '90vh',
+		gridRowGap: '1.2em',
 	}
 });
 
@@ -85,7 +86,7 @@ const TableTemplate = (props: TableProps) => {
       />
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
-				<TableHeader columns={columns} />
+		  <TableHeader columns={columns} />
           <TableBody>
             {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, idx) => {
               return (
@@ -117,8 +118,9 @@ const TableTemplate = (props: TableProps) => {
 									key={column.id}
 									align={column.align}
 									onClick={() => {
+										const keyVal = column.keyId ? row[column.keyId] : value
 										return column.clickable
-											? column.onClick(value)
+											? column.onClick(keyVal)
 											: null;
 									}}>
 									{column.format

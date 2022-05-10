@@ -1,6 +1,7 @@
 import { Modal } from 'components';
 import AuthProvider, { AuthIsNotSignedIn, AuthIsSignedIn } from 'context/auth';
 import ConfigurationProvider from 'context/configuration';
+import UserProvider from 'context/user';
 import {
   BrowserRouter as Router
 } from "react-router-dom";
@@ -12,16 +13,18 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <ConfigurationProvider>
-          <AuthIsNotSignedIn>
-            <NotProtectedRoutes />
-          </AuthIsNotSignedIn>
-          <AuthIsSignedIn>
-            <ProtectedRoutes />
-          </AuthIsSignedIn>
-          <ToastContainer />
-          <Modal />
-        </ConfigurationProvider>
+        <UserProvider>
+          <ConfigurationProvider>
+            <AuthIsNotSignedIn>
+              <NotProtectedRoutes />
+            </AuthIsNotSignedIn>
+            <AuthIsSignedIn>
+              <ProtectedRoutes />
+            </AuthIsSignedIn>
+            <ToastContainer />
+            <Modal />
+          </ConfigurationProvider>
+        </UserProvider>
       </AuthProvider>
     </Router>
   );

@@ -2,10 +2,16 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { ACHTransactionsTable } from 'screens/transactions';
 import BlockchainDataTable from 'screens/transactions/blockchain';
 import { UserTables } from 'types';
+import { UserContext } from '../../context/user';
+import { IUser } from '../../types';
+import UserDepositDataTable from './userDeposit';
+import UserWithdrawalDataTable from './userWithdrawal';
+import UserTransferDataTable from './userTransfers';
 
 const useButtonsStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -30,15 +36,17 @@ const UserTableButtons = ({
 	currentTable: UserTables;
 }) => {
 	const classes = useButtonsStyles();
-	const [style, setStyle] = useState<{ ach: ButtonStyles; bc: ButtonStyles }>(
-		{ ach: outlined, bc: contained }
+	const [style, setStyle] = useState<{ deposit: ButtonStyles; withdrawal: ButtonStyles;  transfer: ButtonStyles }>(
+		{ deposit: outlined, withdrawal: contained, transfer: contained }
 	);
 
 	useEffect(() => {
-		if (currentTable === 1) {
-			setStyle({ ach: outlined, bc: contained });
+		if (currentTable === 0) {
+			setStyle({ deposit: contained, withdrawal: outlined, transfer: outlined });
+		} else if (currentTable === 1) {
+			setStyle({ deposit: outlined, withdrawal: contained, transfer: outlined });
 		} else {
-			setStyle({ ach: contained, bc: outlined });
+			setStyle({ deposit: outlined, withdrawal: outlined, transfer: contained });
 		}
 	}, [currentTable]);
 
@@ -48,19 +56,26 @@ const UserTableButtons = ({
 				color='primary'
 				aria-label='outlined primary button group'>
 				<Button
-					variant={style.ach}
+					variant={style.deposit}
 					onClick={() => {
 						console.log('here')
-						setTableType(UserTables.UserACHTRansactions);
+						setTableType(UserTables.UserDepositTransactions);
 					}}>
-					ACH Transactions
+					Deposits
 				</Button>
 				<Button
-					variant={style.bc}
+					variant={style.withdrawal}
 					onClick={() =>
-						setTableType(UserTables.UserBlockchainTransactions)
+						setTableType(UserTables.UserWithdrawalTransactions)
 					}>
-					Blockchain Transactions
+					Withdrawals
+				</Button>
+				<Button
+					variant={style.transfer}
+					onClick={() =>
+						setTableType(UserTables.UserTransferTransactions)
+					}>
+					Transfers
 				</Button>
 			</ButtonGroup>
 		</div>
@@ -99,35 +114,50 @@ const useStyles = makeStyles({
 	},
 });
 
+interface RouteParams {
+	id: string
+}
+
 const User = () => {
-	const [tableType, setTableType] = useState<UserTables>(UserTables.UserACHTRansactions);
+	const params = useParams<RouteParams>();
+	const { users, getUserDetail } = useContext(UserContext);
+	const [detailUser, setDetailUser] = useState<IUser | undefined>(undefined)
+	const [tableType, setTableType] = useState<UserTables>(UserTables.UserDepositTransactions);
 	const classes = useStyles();
-	const user = 'John Doe';
-	const bank = 'Bank Of';
-	const dowllaId = '01010101010101';
-	const outstandingBerkshares = '250B$';
 	const address = 'Tufnell Park 32';
+
+	useEffect(() => {
+		getUserDetail(users[params.id].dwollaId)
+	}, [])
+
+	useEffect(() => {
+		setDetailUser(users[params.id])
+	}, [users])
+
+	if(!detailUser) {
+		return null
+	}
 
 	return (
 		<div>
 			<div className={classes.wrapper}>
-				<div className={classes.title}>{`User: ${user}`}</div>
+				<div className={classes.title}>{`User: ${detailUser.correlationId.includes('business') ? detailUser.businessName : `${detailUser.firstName} ${detailUser.lastName}`}`}</div>
 				<div></div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Created At:</span>
-					{` ${moment().format()}`}
+					{` ${moment(detailUser.created).format('yyyy-MM-DD HH:mm:ss')}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Dowlla Id:</span>
-					{`${dowllaId}`}
+					{` ${detailUser.dwollaId}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Bank:</span>
-					{` ${bank}`}
+					{` ${detailUser.bank?.bankName ?? ''}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Outstanding:</span>
-					{` ${outstandingBerkshares}`}
+					{` B$ ${detailUser.availableBalance}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Address:</span>
@@ -141,11 +171,11 @@ const User = () => {
 				/>
 			</div>
 			<div>
-				{tableType === 1 ? (
-					<BlockchainDataTable />
-				) : (
-					<ACHTransactionsTable />
-				)}
+				{tableType === 0 ? (
+					<UserDepositDataTable user={detailUser}/>
+				) : tableType === 1 ?(
+					<UserWithdrawalDataTable user={detailUser}/>
+				) : <UserTransferDataTable user={detailUser}/>}
 			</div>
 		</div>
 	);
