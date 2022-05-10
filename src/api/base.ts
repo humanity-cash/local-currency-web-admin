@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSession } from 'services/aws';
 
 /**ENV! */
-const CORE_API_URL = "https://api.humanity.cash";
+const CORE_API_URL = "https://baklava.api.humanity.cash";
 const httpRequest = axios.create({
   baseURL: CORE_API_URL,
 });
@@ -11,7 +11,6 @@ httpRequest.interceptors.request.use(async function (config) {
   try {
     const session: any = await getSession()
     config.headers.authorization = session.accessToken.jwtToken;
-    console.log('token ==========> ', config.headers.authorization)
   } catch (err: any) {
     console.log(`get session error...: ${err}`);
   }
