@@ -36,7 +36,6 @@ const UserProvider: React.FunctionComponent = ({ children }) => {
   }
 
   const getUserDetail = async (dwollaId: string) => {
-    setLoading(true)
     const temp = {...users}
     const user = await UserAPI.getUserDetail(dwollaId)
     const bank = await UserAPI.getFundingSource(dwollaId)
@@ -53,7 +52,6 @@ const UserProvider: React.FunctionComponent = ({ children }) => {
     }
     
     setUsers(temp)
-    setLoading(false)
   }
 
   const state: IUserContext = {
