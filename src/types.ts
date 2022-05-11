@@ -49,6 +49,8 @@ export interface BlockchainData {
   to: Hash;
   fromUser: Username;
   toUser: Username;
+  fromId: string;
+  toId: string;
   type: "Deposit" | "Withdraw" | "Transfer In" | "Transfer Out";
   createdAt: string;
   amount: string;
@@ -56,6 +58,7 @@ export interface BlockchainData {
 }
 
 export interface ACHData {
+  userId: string;
   username: Username;
   type: ACHType;
   transactionId: number;

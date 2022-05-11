@@ -5,6 +5,7 @@ import { UserData } from 'types';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/user';
 import { IUser } from '../../types';
+import Loading from '../loading';
 
 interface Column {
   id: keyof UserData;
@@ -65,9 +66,7 @@ const UsersTable = () => {
 	}, [])
 
 	useEffect(() => {
-		if(!users) {
-			setUserData([])
-		} else {
+		if(users) {
 			setUserData(Object.keys(users).map((userId, index) => {
 				const user = users[userId]
 				return {
@@ -85,7 +84,7 @@ const UsersTable = () => {
 	}, [users])
 
 	if(!userData) {
-		return null
+		return <Loading />
 	}
 
 	return <TableTemplate data={userData} columns={columns} />;

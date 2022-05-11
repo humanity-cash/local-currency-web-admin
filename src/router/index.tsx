@@ -31,8 +31,8 @@ export const NotProtectedRoutes = () => {
 		<>
 			<Sidebar />
 			<Switch>
-					<Route path="/login" exact component={AuthScreen}/>
-					<Route path="/change-password" exact component={AuthScreen}/>
+				<Route path="/login" exact component={AuthScreen}/>
+				<Route path="/change-password" exact component={AuthScreen}/>
 			</Switch>
 		</>
   );

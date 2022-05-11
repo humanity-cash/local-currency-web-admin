@@ -1,12 +1,16 @@
 import { FilterTable } from 'components';
-import { useACHData } from 'hooks';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { ACHData, ACHDataState } from 'types';
 import { iconStatus } from 'utils';
+import { useContext } from 'react';
+import { TransactionContext } from '../../context/transaction';
+import Loading from 'screens/loading';
+import { UserContext } from 'context/user';
 
 interface Column {
   name: keyof ACHData
+  keyId?: string;
   title: string;
   minWidth?: number;
   align?: 'right';
@@ -30,7 +34,9 @@ const useColumns = () => {
 			name: 'username',
 			title: 'User',
 			minWidth: 100,
+			keyId: 'userId',
 			clickable: true,
+		
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
 		{
@@ -50,14 +56,14 @@ const useColumns = () => {
 			title: 'User Bank',
 			minWidth: 100,
 			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
+			// onClick: (value: string) => history.push(`/bank/${value}`),
 		},
 		{
 			name: 'berksharesBank',
 			title: 'Berkshares Bank',
 			minWidth: 100,
 			clickable: true,
-			onClick: (value: string) => history.push(`/bank/${value}`),
+			// onClick: (value: string) => history.push(`/bank/${value}`),
 		},
 		{
 			name: 'amount',
@@ -77,19 +83,24 @@ const useColumns = () => {
 };
 
 const ACHDataTable = () => {
-	const state: ACHDataState = useACHData();
+	const {achDataState} = useContext(TransactionContext)
+	const {users} = useContext(UserContext)
 	const columns = useColumns(); 
 
-  return (
+	if( !achDataState || !users ) {
+		return <Loading />
+	}
+
+	return (
 		<div
 			style={{
 				paddingLeft: '19em',
 				paddingTop: '2em',
 				paddingRight: '2em',
 			}}>
-			<FilterTable rows={state.data} columns={columns} />
+			<FilterTable rows={achDataState.data} columns={columns} />
 		</div>
-  );
+	);
 }
 
 export default ACHDataTable;

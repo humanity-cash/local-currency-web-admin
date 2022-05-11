@@ -1,11 +1,15 @@
 import { FilterTable } from 'components';
-import { useBlockchainData } from 'hooks';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
-import { BlockchainData, BlockchainDataState } from 'types';
+import { BlockchainData } from 'types';
+import { useContext } from 'react';
+import { TransactionContext } from '../../context/transaction';
+import { UserContext } from 'context/user';
+import Loading from 'screens/loading';
 
 interface Column {
   name: keyof BlockchainData;
+  keyId?: string;
   title: string;
   minWidth?: number;
   align?: 'right';
@@ -20,37 +24,30 @@ const useColumns = () => {
 		{
 			name: 'transactionHash',
 			title: 'Hash',
-			minWidth: 100,
 			clickable: true,
 			onClick: (value: string) => history.push(`/transaction/bc/${value}`),
 		},
 		{
 			name: 'fromUser',
+			keyId: 'fromId',
 			title: 'From',
-			minWidth: 100,
 			clickable: true,
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
 		{
 			name: 'toUser',
+			keyId: 'toId',
 			title: 'To',
-			minWidth: 100,
 			clickable: true,
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
 		{
 			name: 'from',
 			title: 'From Address',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => console.log('clicked'),
 		},
 		{
 			name: 'to',
 			title: 'To Address',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => console.log('clicked'),
 		},
 		{
 			name: 'type',
@@ -61,19 +58,16 @@ const useColumns = () => {
 		{
 			name: 'amount',
 			title: 'Amount',
-			minWidth: 100,
 			format: (value: number) => 'B$ ' + value,
 		},
 		{
 			name: 'createdAt',
 			title: 'Created At',
-			minWidth: 100,
 			format: (value: number) => moment().format(),
 		},
 		{
 			name: 'blocksConfirmed',
 			title: 'Blocks Confirmed',
-			minWidth: 100,
 			format: (value: number) => value
 		},
 	];
@@ -84,13 +78,18 @@ const useColumns = () => {
 
 const BlockchainDataTable = () => {
 	const columns: Column[] = useColumns();
-	const state: BlockchainDataState = useBlockchainData();
+	const {blockchainDataState} = useContext(TransactionContext)
+	const {users} = useContext(UserContext)
 
-  return (
+	if(!users || !blockchainDataState) {
+		return <Loading />
+	}
+
+	return (
 		<div style={{paddingLeft: '19em', paddingTop: '2em',  paddingRight: '2em'}}>
-			<FilterTable rows={state.data} columns={columns} />
+			<FilterTable rows={blockchainDataState.data} columns={columns} />
 		</div>
-  );
+	);
 }
 
 export default BlockchainDataTable;

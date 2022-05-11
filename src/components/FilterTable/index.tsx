@@ -37,12 +37,13 @@ const UserBankFormatter = ({ value }: any) => {
 	);
 }
 
-const UsernameFormatter = ({ value }: any) => {
+const UsernameFormatter = ({ value, row, column }: any) => {
+	const val = column.keyId ? row[column.keyId] : value
 	const history = useHistory();
 	return (
 		<div
 			style={{ cursor: 'pointer', textDecoration: 'underline' }}
-			onClick={() => history.push(`/user/${value}`)}>
+			onClick={() => history.push(`/user/${val}`)}>
 			{value}
 		</div>
 	);
