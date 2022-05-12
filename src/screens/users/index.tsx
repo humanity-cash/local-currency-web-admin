@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { UserData } from 'types';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/user';
-import { IUser } from '../../types';
 import Loading from '../loading';
 
 interface Column {
@@ -32,25 +31,24 @@ const useColumns = () => {
 		{ id: 'email', label: 'Email', minWidth: 170 },
 		{ id: 'dowllaId', label: 'Dowlla Id', minWidth: 100 },
 		{
+			id: 'blockchainAddress',
+			label: 'Wallet Address',
+			format: (value: string) => value,
+		},
+		{
 			id: 'outstandingBalance',
 			label: 'Balance',
 			format: (value: number) => 'B$ ' + value.toFixed(2),
 		},
 		{
-			id: 'blockchainAddress',
-			label: 'Wallet Address',
-			format: (value: string) => value,
-		},
-		// {
-		// 	id: 'address',
-		// 	label: 'address',
-		// 	format: (value: string) => value,
-		// },
-		{
 			id: 'type',
 			label: 'Type',
 			format: (value: string) => value,
 		},
+		{
+			id: 'createdAt',
+			label: 'Created Date',
+		}
 	];
 
 	return columns;
@@ -77,7 +75,8 @@ const UsersTable = () => {
 					outstandingBalance: user.availableBalance,
 					blockchainAddress: user.address,
 					address: "Holloway 89832, Boston",
-					type: user.correlationId.includes('business') ? 'Business' : 'Personal'
+					type: user.correlationId.includes('business') ? 'Business' : 'Personal',
+					createdAt: moment(user.createdTimestamp).format("yyyy-MM-DD HH:mm:ss")
 				}
 			}))
 		}
