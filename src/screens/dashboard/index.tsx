@@ -44,8 +44,8 @@ const Dashboard = () => {
 			<PieChart />
 			<BarChart title={'Deposits Per Bank'} data={depositData}/>
 			<BarChart title={'Withdrawals Per Bank'} data={withdrawData} />
-			<LineChart title={'Redemption Fees'} yAxis='Y - Fees' />
-			<LineChart title={'Community Chest'} yAxis='Y - Contributions' />
+			{/* <LineChart title={'Redemption Fees'} yAxis='Y - Fees' />
+			<LineChart title={'Community Chest'} yAxis='Y - Contributions' /> */}
 			{/* {CardsData.map(c => <DataCard key={c.title} title={c.title} body={c.body} additional={c?.additional} />)} */}
 		</div>
   );
