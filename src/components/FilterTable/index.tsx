@@ -73,8 +73,8 @@ const TransactionIdTypeProvider = (props: any) => (
 );
 
 const FilterTable = ({columns, rows}: any) => {
-	const transactionIdColumn = ['transactionId'];
-	const usernameColumn = ['username'];
+	const transactionIdColumn = ['coming_soon'];
+	const usernameColumn = ['username', 'fromUser', 'toUser'];
 	const userBankColumn = ['userBank'];
 	const berksharesBankColumn = ['berksharesBank'];
 
