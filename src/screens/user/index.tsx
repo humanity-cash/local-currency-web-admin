@@ -107,6 +107,7 @@ const useStyles = makeStyles({
 	title: {
 		fontSize: '34px',
 		alignItems: 'left',
+		textDecoration: 'underline',
 	},
 	prop: {
 		color: 'gray',
@@ -140,32 +141,15 @@ const User = () => {
 	return (
 		<div>
 			<div className={classes.wrapper}>
-				{/* <div className={classes.title}>{`User: ${detailUser.correlationId.includes('business') ? detailUser.businessName : `${detailUser.firstName} ${detailUser.lastName}`}`}</div> */}
-				<div className={classes.title}>User</div>
+				<div className={classes.title}>{`User: ${detailUser.correlationId.includes('business') ? detailUser.businessName : `${detailUser.firstName} ${detailUser.lastName}`}`}</div>
 				<div></div>
-				<div className={classes.fs18}>
-					<span className={classes.prop}>First Name: </span>
-					{detailUser.firstName}
-				</div>
-				<div className={classes.fs18}>
-					<span className={classes.prop}>Last Name: </span>
-					{detailUser.lastName}
-				</div>
-				<div className={classes.fs18}>
-					<span className={classes.prop}>Email: </span>
-					{detailUser.email}
-				</div>
-				<div className={classes.fs18}>
-					<span className={classes.prop}>Address:</span>
-					{` ${address}`}
-				</div>
-				<div className={classes.fs18}>
-					<span className={classes.prop}>Dwolla Id:</span>
-					{` ${detailUser.dwollaId}`}
-				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Created At:</span>
 					{` ${moment(detailUser.created).format('yyyy-MM-DD HH:mm:ss')}`}
+				</div>
+				<div className={classes.fs18}>
+					<span className={classes.prop}>Dowlla Id:</span>
+					{` ${detailUser.dwollaId}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Bank:</span>
@@ -174,6 +158,10 @@ const User = () => {
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Outstanding:</span>
 					{` B$ ${detailUser.availableBalance}`}
+				</div>
+				<div className={classes.fs18}>
+					<span className={classes.prop}>Address:</span>
+					{` ${address}`}
 				</div>
 			</div>
 			<div className={classes.achTitle}>
