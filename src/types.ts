@@ -35,7 +35,7 @@ type Hash = string;
 export interface UserData {
   name: string;
   email: string;
-  dowllaId: string;
+  dwollaId: string;
   outstandingBalance: number;
   lastLogin: Time;
   blockchainAddress: string;
