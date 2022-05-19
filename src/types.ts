@@ -41,6 +41,7 @@ export interface UserData {
   blockchainAddress: string;
   address: string;
   type: "Business" | "Personal";
+  createdAt: string
 }
 
 export interface BlockchainData {

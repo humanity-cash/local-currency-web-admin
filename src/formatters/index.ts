@@ -91,7 +91,7 @@ export const formatUser = (data: any): IUser => {
     userId: data.userId,
     address: data.address,
     createdBlock: data.createdBlock,
-    createdTimestamp: data.createdTimestamp,
+    createdTimestamp: data.createdTimestamp * 1000,
     availableBalance: data.availableBalance,
     dwollaId: detail.id,
     firstName: detail.firstName,
