@@ -30,7 +30,7 @@ const useColumns = () => {
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
 		{ name: 'email', title: 'Email', minWidth: 170 },
-		{ name: 'dowllaId', title: 'Dowlla Id', minWidth: 100 },
+		{ name: 'dwollaId', title: 'Dwolla Id', minWidth: 100 },
 		{
 			name: 'blockchainAddress',
 			title: 'Wallet Address',
@@ -72,7 +72,7 @@ const UsersTable = () => {
 					name: user.correlationId.includes('business') ? user.businessName : `${user.firstName} ${user.lastName}`,
 					userId: user.userId,
 					email: user.email,
-					dowllaId: user.dwollaId,
+					dwollaId: user.dwollaId,
 					outstandingBalance: user.availableBalance,
 					blockchainAddress: user.address,
 					address: "Holloway 89832, Boston",

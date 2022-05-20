@@ -25,9 +25,8 @@ const useColumns = () => {
 		{
 			name: 'transactionId',
 			title: 'ID',
-			minWidth: 100,
-			clickable: true,
-			onClick: (value: string) => history.push(`/transaction/${value}`),
+			// clickable: true,
+			// onClick: (value: string) => history.push(`/transaction/${value}`),
 		},
 		{ name: 'type', title: 'Type', minWidth: 100 },
 		{
