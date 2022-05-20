@@ -1,4 +1,5 @@
-import { DataTypeProvider, FilteringState, IntegratedFiltering, IntegratedPaging, PagingState } from '@devexpress/dx-react-grid';
+import { useState } from 'react'
+import { DataTypeProvider, FilteringState, IntegratedFiltering, IntegratedPaging, IntegratedSorting, PagingState, SortingState } from '@devexpress/dx-react-grid';
 import {
 	Grid,
 	PagingPanel,
@@ -103,9 +104,22 @@ const UnitsFilterCell = ({ filter, onFilter }: any) => {
   
 const FilterTable = ({columns, rows}: any) => {
 	const transactionIdColumn = ['coming_soon'];
-	const usernameColumn = ['username', 'fromUser', 'toUser'];
+	const usernameColumn = ['username', 'name', 'fromUser', 'toUser'];
 	const userBankColumn = ['userBank'];
 	const berksharesBankColumn = ['berksharesBank'];
+
+	const compareAmount = (a: string, b: string) => {
+		return Number(a) < Number(b) ? -1 : 1
+	}
+
+	const [integratedSortingColumnExtensions] = useState([
+		{ columnName: 'amount', compare: compareAmount },
+		{ columnName: 'outstandingBalance', compare: compareAmount },
+	]);
+
+	const [tableColumnExtensions] = useState([
+	{ columnName: 'subject', width: 300 },
+	]);
 
 	return (
 		<Paper>
@@ -116,10 +130,14 @@ const FilterTable = ({columns, rows}: any) => {
 				<UserBankTypeProvider for={berksharesBankColumn} />
 				<FilteringState defaultFilters={[]} />
 				<IntegratedFiltering />
+				<SortingState />
+				<IntegratedSorting 
+					columnExtensions={integratedSortingColumnExtensions}
+				/>
 				<PagingState defaultCurrentPage={0} pageSize={10} />
 				<IntegratedPaging />
 				<Table tableComponent={TableComponentBase} />
-				<TableHeaderRow />
+				<TableHeaderRow showSortingControls/>
 				<TableFilterRow 
 					cellComponent={FilterCell}
 				/>

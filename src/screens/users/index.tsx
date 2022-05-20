@@ -5,11 +5,12 @@ import { UserData } from 'types';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/user';
 import Loading from '../loading';
+import FilterTable from '../../components/FilterTable/index';
 
 interface Column {
-  id: keyof UserData;
+  name: keyof UserData;
   keyId?: string;
-  label: string;
+  title: string;
   minWidth?: number;
   align?: 'right';
   format?: (value: any) => any;
@@ -22,32 +23,32 @@ const useColumns = () => {
 	
 	const columns: Column[] = [
 		{
-			id: 'name',
+			name: 'name',
 			keyId: 'userId',
-			label: 'Name',
+			title: 'Name',
 			clickable: true,
 			onClick: (value: string) => history.push(`/user/${value}`),
 		},
-		{ id: 'email', label: 'Email', minWidth: 170 },
-		{ id: 'dwollaId', label: 'Dwolla Id', minWidth: 100 },
+		{ name: 'email', title: 'Email', minWidth: 170 },
+		{ name: 'dwollaId', title: 'Dwolla Id', minWidth: 100 },
 		{
-			id: 'blockchainAddress',
-			label: 'Wallet Address',
+			name: 'blockchainAddress',
+			title: 'Wallet Address',
 			format: (value: string) => value,
 		},
 		{
-			id: 'outstandingBalance',
-			label: 'Balance',
+			name: 'outstandingBalance',
+			title: 'Balance',
 			format: (value: number) => 'B$ ' + value.toFixed(2),
 		},
 		{
-			id: 'type',
-			label: 'Type',
+			name: 'type',
+			title: 'Type',
 			format: (value: string) => value,
 		},
 		{
-			id: 'createdAt',
-			label: 'Created Date',
+			name: 'createdAt',
+			title: 'Created Date',
 		}
 	];
 
@@ -86,7 +87,13 @@ const UsersTable = () => {
 		return <Loading />
 	}
 
-	return <TableTemplate data={userData} columns={columns} />;
+	return (
+		<div style={{paddingLeft: '19em', paddingTop: '2em',  paddingRight: '2em'}}>
+			<FilterTable rows={userData} columns={columns} />
+		</div>
+	);
+
+	// return <TableTemplate data={userData} columns={columns} />;
 };
 
 export default UsersTable;
