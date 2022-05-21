@@ -1,3 +1,6 @@
+/**Transaction */
+export const BLOCK_NET_URL      = "https://baklava-blockscout.celo-testnet.org";
+
 /**Routes */
 export const START_CONTRACT     = "/admin/unpause";
 export const STOP_CONTRACT      = "/admin/pause";
