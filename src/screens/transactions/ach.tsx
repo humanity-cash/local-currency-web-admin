@@ -1,7 +1,7 @@
 import { FilterTable } from 'components';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
-import { ACHData, ACHDataState } from 'types';
+import { ACHData } from 'types';
 import { iconStatus } from 'utils';
 import { useContext } from 'react';
 import { TransactionContext } from '../../context/transaction';
