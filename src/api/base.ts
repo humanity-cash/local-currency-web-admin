@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSession } from 'services/aws';
 
 /**ENV! */
-const CORE_API_URL = "https://baklava.api.humanity.cash";
+export const CORE_API_URL = "https://baklava.api.humanity.cash";
 const httpRequest = axios.create({
   baseURL: CORE_API_URL,
 });

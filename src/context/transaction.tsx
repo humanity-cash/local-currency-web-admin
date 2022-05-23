@@ -51,7 +51,7 @@ const TransactionProvider: React.FunctionComponent = ({ children }) => {
           userBank: "Bank Of Country",
           bankAccount: "1G1C1G2343ER",
           status: "Success",
-          transactionId: index + 1,
+          transactionHash: tx.transactionHash,
         };
       });
       
