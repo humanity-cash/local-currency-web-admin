@@ -62,7 +62,6 @@ export interface ACHData {
   userId: string;
   username: Username;
   type: ACHType;
-  transactionId: number;
   createdAt: Time;
   confirmedAt: Time;
   amount: number;
@@ -70,6 +69,7 @@ export interface ACHData {
   berksharesBank: string;
   bankAccount: string;
   status: TransactionStatus;
+  transactionHash: string;
 }
 
 export interface OperatorData {
