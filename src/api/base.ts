@@ -9,13 +9,32 @@ const httpRequest = axios.create({
 
 httpRequest.interceptors.request.use(async function (config) {
   try {
-    const session: any = await getSession()
-    config.headers.authorization = session.accessToken.jwtToken;
+    const expiration = window.localStorage.getItem('expiration') ?? ""
+    const expired = tokenIsExpired(expiration)
+
+    if(expired) {
+      const session: any = await getSession()
+      config.headers.authorization = session.accessToken.jwtToken;
+    } else {
+      const accessToken = window.localStorage.getItem('accessToken')
+      config.headers.authorization = accessToken;
+    }
   } catch (err: any) {
     console.log(`get session error...: ${err}`);
   }
   return config;
 });
+
+function tokenIsExpired(tokenExpiry:string) : boolean {
+  try{
+    const now = Math.floor(Date.now() / 1000);
+    const expiry = parseInt(tokenExpiry);
+    return now >= expiry;
+  }
+  catch(err){
+    return true;
+  }
+}
 
 type Query = string;
 type Path = string;
