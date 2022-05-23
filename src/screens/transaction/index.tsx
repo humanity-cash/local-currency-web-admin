@@ -52,7 +52,7 @@ const Transaction = () => {
 				<div></div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Created At:</span>
-					{` ${moment().format()}`}
+					{` ${moment().format('MMM DD, yyyy, HH:mm:ss')}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Confirmed At:</span>
