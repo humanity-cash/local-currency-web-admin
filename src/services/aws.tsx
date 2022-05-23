@@ -70,7 +70,7 @@ export async function signInWithEmail(username: string, password: string) {
 			Password: password,
 		}
 		const authenticationDetails = new AuthenticationDetails(authenticationData)
-    currentUser = getCognitoUser(username)
+    	currentUser = getCognitoUser(username)
 
 		return currentUser.authenticateUser(authenticationDetails, {
 			onSuccess: function (res: any) {
