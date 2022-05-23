@@ -13,6 +13,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { useHistory } from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import { Input } from '@material-ui/core';
+import { BLOCK_NET_URL } from 'consts';
 
 const useStyles = makeStyles({
 	tableStriped: {
@@ -59,11 +60,10 @@ const UsernameTypeProvider = (props: any) => (
 );
 
 const TransactionIdFormatter = ({ value }: any) => {
-	const history = useHistory();
 	return (
 		<div
 			style={{ cursor: 'pointer', textDecoration: 'underline' }}
-			onClick={() => history.push(`/transaction/${value}`)}>
+			onClick={() => window.open(`${BLOCK_NET_URL}/tx/${value}`)}>
 			{value}
 		</div>
 	);
@@ -71,6 +71,36 @@ const TransactionIdFormatter = ({ value }: any) => {
 
 const TransactionIdTypeProvider = (props: any) => (
 	<DataTypeProvider formatterComponent={TransactionIdFormatter} {...props} />
+);
+
+const WalletAddressFormatter = ({ value }: any) => {
+	const history = useHistory();
+	return (
+		<div
+			style={{ cursor: 'pointer', textDecoration: 'underline' }}
+			onClick={() => window.open(`${BLOCK_NET_URL}/address/${value}`)}>
+			{value}
+		</div>
+	);
+}
+
+const WalletAddressTypeProvider = (props: any) => (
+	<DataTypeProvider formatterComponent={WalletAddressFormatter} {...props} />
+);
+
+const TransactionBlockFormatter = ({ value }: any) => {
+	const history = useHistory();
+	return (
+		<div
+			style={{ cursor: 'pointer', textDecoration: 'underline' }}
+			onClick={() => window.open(`${BLOCK_NET_URL}/block/${value}`)}>
+			{value}
+		</div>
+	);
+}
+
+const TransactionBlockTypeProvider = (props: any) => (
+	<DataTypeProvider formatterComponent={TransactionBlockFormatter} {...props} />
 );
 
 const UnitsFilterCell = ({ filter, onFilter }: any) => {
@@ -102,10 +132,12 @@ const UnitsFilterCell = ({ filter, onFilter }: any) => {
   
   
 const FilterTable = ({columns, rows}: any) => {
-	const transactionIdColumn = ['coming_soon'];
+	const transactionIdColumn = ['transactionHash'];
 	const usernameColumn = ['username', 'name', 'fromUser', 'toUser'];
 	const userBankColumn = ['userBank'];
 	const berksharesBankColumn = ['berksharesBank'];
+	const walletAddressCoulumn = ['blockchainAddress', 'from', 'to', 'fromAddress', 'toAddress'];
+	const transactionBlockCoulumn = ['blocksConfirmed', 'blockNumber'];
 
 	const compareAmount = (a: string, b: string) => {
 		return Number(a) < Number(b) ? -1 : 1
@@ -125,8 +157,10 @@ const FilterTable = ({columns, rows}: any) => {
 			<Grid rows={rows} columns={columns}>
 				<TransactionIdTypeProvider for={transactionIdColumn} />
 				<UsernameTypeProvider for={usernameColumn} />
-				<UserBankTypeProvider for={userBankColumn} />
-				<UserBankTypeProvider for={berksharesBankColumn} />
+				{/* <UserBankTypeProvider for={userBankColumn} /> */}
+				{/* <UserBankTypeProvider for={berksharesBankColumn} /> */}
+				<WalletAddressTypeProvider for={walletAddressCoulumn} />
+				<TransactionBlockTypeProvider for={transactionBlockCoulumn} />
 				<FilteringState defaultFilters={[]} />
 				<IntegratedFiltering />
 				<SortingState />
