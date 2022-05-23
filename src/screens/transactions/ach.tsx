@@ -23,7 +23,7 @@ const useColumns = () => {
 	const history = useHistory();
 	const columns: Column[] = [
 		{
-			name: 'transactionId',
+			name: 'transactionHash',
 			title: 'ID',
 			// clickable: true,
 			// onClick: (value: string) => history.push(`/transaction/${value}`),
