@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import { Input } from '@material-ui/core';
 import { BLOCK_NET_URL } from 'consts';
+import moment from 'moment';
 
 const useStyles = makeStyles({
 	tableStriped: {
@@ -103,6 +104,19 @@ const TransactionBlockTypeProvider = (props: any) => (
 	<DataTypeProvider formatterComponent={TransactionBlockFormatter} {...props} />
 );
 
+const TimeFormatter = ({ value }: any) => {
+	const history = useHistory();
+	return (
+		<div>
+			{moment(value).format('MMM DD, yyyy, hh:mm:ss')}
+		</div>
+	);
+}
+
+const TimeProvider = (props: any) => (
+	<DataTypeProvider formatterComponent={TimeFormatter} {...props} />
+);
+
 const UnitsFilterCell = ({ filter, onFilter }: any) => {
 	const [focused, setFocused] = useState(false);
 
@@ -138,6 +152,7 @@ const FilterTable = ({columns, rows}: any) => {
 	const berksharesBankColumn = ['berksharesBank'];
 	const walletAddressCoulumn = ['blockchainAddress', 'from', 'to', 'fromAddress', 'toAddress'];
 	const transactionBlockCoulumn = ['blocksConfirmed', 'blockNumber'];
+	const timeCoulumn = ['createdAt', 'confirmedAt'];
 
 	const compareAmount = (a: string, b: string) => {
 		return Number(a) < Number(b) ? -1 : 1
@@ -161,6 +176,7 @@ const FilterTable = ({columns, rows}: any) => {
 				{/* <UserBankTypeProvider for={berksharesBankColumn} /> */}
 				<WalletAddressTypeProvider for={walletAddressCoulumn} />
 				<TransactionBlockTypeProvider for={transactionBlockCoulumn} />
+				<TimeProvider for={timeCoulumn} />
 				<FilteringState defaultFilters={[]} />
 				<IntegratedFiltering />
 				<SortingState />
