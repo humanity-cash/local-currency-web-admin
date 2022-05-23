@@ -131,7 +131,9 @@ const ContractsTable = () => {
                   checked={healthData.controllerStatus === 'ACTIVE'}
                   color="primary"
                   onChange={(e) => {
-                    onPause(healthData.controllerStatus !== 'ACTIVE')
+                    if(window.confirm(`Are you sure to ${healthData.controllerStatus === 'ACTIVE' ? 'pause' : 'active'} contracts?`)) {
+                      onPause(healthData.controllerStatus !== 'ACTIVE')
+                    }
                   }}
                 />
               }
