@@ -8,6 +8,7 @@ import { ConfigurationData, ModalState } from 'types';
 import {Paper, Grid, Switch, FormControlLabel} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { ConfigurationContext } from '../../context/configuration';
+import { CORE_API_URL } from '../../api/base';
 
 
 const useStyles = makeStyles({
@@ -190,6 +191,12 @@ const ContractsTable = () => {
           </Grid>
           <Grid className={classes.itemDetail} item xs={8} lg={4}>
             <div>{healthData.walletFactory}</div>
+          </Grid>
+          <Grid className={classes.itemTitle} item xs={4} lg={2}>
+            <div>API Link</div>
+          </Grid>
+          <Grid className={classes.itemDetail} item xs={8} lg={4}>
+            <div>{CORE_API_URL}</div>
           </Grid>
         </Grid>
       </Paper>
