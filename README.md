@@ -3,8 +3,6 @@
 
 ![Keyko Banner](https://raw.githubusercontent.com/keyko-io/assets/master/images/logo/keyko_banner_2.jpg)
 
-![workflow status](https://github.com/humanity-cash/local-currency-web-admin/workflows/Build/badge.svg)
-
 This is a very basic React single page app showing various statistics and configuration about the local currency project implemented by https://github.com/humanity-cash/local-currency-contracts, https://github.com/humanity-cash/local-currency-core, and https://github.com/humanity-cash/local-currency-app.
 
 This project uses AWS Cognito as a authentication provider, and is deployed to AWS Amplify via Git commit hooks. This is a Typescript, React, and Yarn project.
@@ -15,7 +13,6 @@ nvm use 16
 yarn
 ```
 ## Tests
-
 WIP: There are currently no unit tests for this project
 
 ```
@@ -26,15 +23,12 @@ yarn test
 yarn prettier
 ```
 # Environment Variables
-
 The following attributes must be provided to the environment
-
 ```
 REACT_APP_USERPOOL_ID=<Your Cognito user pool>
 REACT_APP_CLIENT_ID=<Your Cognito client id>
 API_BASE=<API implemented by local-currency-core project (see above)>
 ```
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
