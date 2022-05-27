@@ -165,7 +165,7 @@ const User = () => {
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Created At:</span>
-					{` ${moment(detailUser.created).format('yyyy-MM-DD HH:mm:ss')}`}
+					{` ${moment(detailUser.created).format('MMM DD, yyyy, HH:mm:ss')}`}
 				</div>
 				<div className={classes.fs18}>
 					<span className={classes.prop}>Bank:</span>
