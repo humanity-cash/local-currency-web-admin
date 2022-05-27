@@ -1,7 +1,14 @@
 {
-  "name": "web-admin",
-  "version": "0.1.0",
-  "private": true,
+  "name": "local-currency-web-admin",
+  "version": "0.0.1-alpha",
+  "description": "Administration portal to review data and configuration for the local currency application",
+  "repository": "https://github.com/humanity-cash/local-currency-web-admin.git",
+  "contributors": [
+    "Esraa Jbara Keyko GmbH",
+    "Jay Sun Keyko GmbH",
+    "Aaron Boyd Keyko GmbH"
+  ],
+  "license": "Apache",
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.8",
     "@devexpress/dx-react-chart": "^2.7.6",
@@ -41,7 +48,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "npx eslint src/*.ts src/**/*.ts src/**/**/*.ts",
-    "prettier": "prettier --write ./src/*.ts ./src/**/**/*.ts ./src/**/*.ts"
+    "prettier": "prettier --write ./src/*.ts ./src/**/**/*.ts ./src/**/*.ts",
+    "snyk-protect": "snyk-protect",
+    "prepare": "npm run snyk-protect"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@snyk/protect": "^1.940.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "eslint-config-prettier": "^8.3.0",

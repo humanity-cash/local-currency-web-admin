@@ -6,12 +6,12 @@ import { ITransaction } from '../../types';
 
 const useStyles = makeStyles({
   wrapper: {
-    padding: '24px',
-    paddingLeft: '18em',
-		gridRowGap: '0.8em',
-		display: 'grid',
-		gridTemplateColumns: '1fr',
-		gridTemplateRows: '1fr 1fr 1fr 1fr 1fr ',
+	padding: '24px',
+	paddingLeft: '18em',
+	gridRowGap: '0.8em',
+	display: 'grid',
+	gridTemplateColumns: '1fr',
+	gridTemplateRows: '1fr 1fr 1fr 1fr 1fr ',
   },
 });
 
@@ -44,8 +44,8 @@ const Dashboard = () => {
 			<PieChart />
 			<BarChart title={'Deposits Per Bank'} data={depositData}/>
 			<BarChart title={'Withdrawals Per Bank'} data={withdrawData} />
-			<LineChart title={'Redemption Fees'} yAxis='Y - Fees' />
-			<LineChart title={'Community Chest'} yAxis='Y - Contributions' />
+			{/* <LineChart title={'Redemption Fees'} yAxis='Y - Fees' />
+			<LineChart title={'Community Chest'} yAxis='Y - Contributions' /> */}
 			{/* {CardsData.map(c => <DataCard key={c.title} title={c.title} body={c.body} additional={c?.additional} />)} */}
 		</div>
   );

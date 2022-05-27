@@ -76,6 +76,7 @@ const AuthProvider: React.FunctionComponent = ({ children }) => {
         })
         window.localStorage.setItem('accessToken', `${session.accessToken.jwtToken}`)
         window.localStorage.setItem('refreshToken', `${session.refreshToken.token}`)
+        window.localStorage.setItem('expiration', `${session.accessToken.getExpiration()}`)
         setAuthStatus(AuthStatus.SignedIn)
       } catch (err) {
         setAuthStatus(AuthStatus.SignedOut)

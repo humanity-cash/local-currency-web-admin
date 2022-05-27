@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 
 export type AxiosPromiseResponse<T = unknown> = AxiosResponse<T>;
 
-export interface ContractData {
+export interface ConfigurationData {
   name: string;
   address: string;
   deployedAt: number;
@@ -10,14 +10,16 @@ export interface ContractData {
   version: number;
 }
 
-export interface ContractsState {
-  data: ContractData[];
+export interface ConfigurationState {
+  data: ConfigurationData[];
 }
 
 export interface ModalState {
   type: string;
   isOpen: boolean;
+  title: string;
   modalProps: Record<string, unknown>;
+  confirmHandler?: () => any;
 }
 
 export interface BlockchainDataState {
@@ -33,12 +35,13 @@ type Hash = string;
 export interface UserData {
   name: string;
   email: string;
-  dowllaId: string;
+  dwollaId: string;
   outstandingBalance: number;
   lastLogin: Time;
   blockchainAddress: string;
   address: string;
   type: "Business" | "Personal";
+  createdAt: string;
 }
 
 export interface BlockchainData {
@@ -47,16 +50,18 @@ export interface BlockchainData {
   to: Hash;
   fromUser: Username;
   toUser: Username;
+  fromId: string;
+  toId: string;
   type: "Deposit" | "Withdraw" | "Transfer In" | "Transfer Out";
-  createdAt: Time;
-  amount: number;
+  createdAt: string;
+  amount: string;
   blocksConfirmed: number;
 }
 
 export interface ACHData {
+  userId: string;
   username: Username;
   type: ACHType;
-  transactionId: number;
   createdAt: Time;
   confirmedAt: Time;
   amount: number;
@@ -64,16 +69,17 @@ export interface ACHData {
   berksharesBank: string;
   bankAccount: string;
   status: TransactionStatus;
+  transactionHash: string;
 }
 
 export interface OperatorData {
-  operator: string,
-  operatorDisplayName: string,
-  totalDeposits: number,
-  totalWithdrawals: number,
-  currentOutstanding: number,
-  deposits: ITransaction[],
-  withdrawals: ITransaction[]
+  operator: string;
+  operatorDisplayName: string;
+  totalDeposits: number;
+  totalWithdrawals: number;
+  currentOutstanding: number;
+  deposits: ITransaction[];
+  withdrawals: ITransaction[];
 }
 
 export interface ITransaction {
@@ -105,6 +111,22 @@ export interface IBlockchainTransaction {
   blockNumber: number;
   timestamp: number;
   type: "Transfer In" | "Transfer Out" | "Deposit" | "Withdraw" | "Transfer";
+  fromName: string;
+  toName: string;
+  fromDwollaUserId: string;
+  toDwollaUserId: string;
+}
+
+export interface IHealth {
+  blockNumber: number;
+  chainId: number;
+  nodeInfo: string;
+  token: string;
+  controller: string;
+  walletCount: string;
+  owner: string;
+  walletFactory: string;
+  controllerStatus: "ACTIVE" | "PAUSED";
 }
 
 export interface ACHDataState {
@@ -115,7 +137,36 @@ export interface OperatorDataState {
   data: OperatorData[];
 }
 
+export interface IBank {
+  bankName: string;
+  bankAccountType: string;
+  createdAt: string;
+  name: string;
+}
+
+export interface IUser {
+  userId: string;
+  address: string;
+  createdBlock: string;
+  createdTimestamp: number;
+  availableBalance: number;
+  dwollaId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  type: string;
+  status: string;
+  created: string;
+  correlationId: string;
+  businessName: string;
+  bank?: IBank | undefined;
+  deposits?: IACHTransaction[] | undefined;
+  withdraws?: IACHTransaction[] | undefined;
+  transfers?: IBlockchainTransaction[] | undefined;
+}
+
 export enum UserTables {
-  UserACHTRansactions,
-  UserBlockchainTransactions,
+  UserDepositTransactions,
+  UserWithdrawalTransactions,
+  UserTransferTransactions,
 }
