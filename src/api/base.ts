@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getSession } from 'services/aws';
+import { getSession } from "services/aws";
 
 /**ENV! */
 export const CORE_API_URL = "https://baklava.api.humanity.cash";
@@ -9,14 +9,14 @@ const httpRequest = axios.create({
 
 httpRequest.interceptors.request.use(async function (config) {
   try {
-    const expiration = window.localStorage.getItem('expiration') ?? ""
-    const expired = tokenIsExpired(expiration)
+    const expiration = window.localStorage.getItem("expiration") ?? "";
+    const expired = tokenIsExpired(expiration);
 
-    if(expired) {
-      const session: any = await getSession()
+    if (expired) {
+      const session: any = await getSession();
       config.headers.authorization = session.accessToken.jwtToken;
     } else {
-      const accessToken = window.localStorage.getItem('accessToken')
+      const accessToken = window.localStorage.getItem("accessToken");
       config.headers.authorization = accessToken;
     }
   } catch (err: any) {
@@ -25,20 +25,19 @@ httpRequest.interceptors.request.use(async function (config) {
   return config;
 });
 
-function tokenIsExpired(tokenExpiry:string) : boolean {
-  try{
+function tokenIsExpired(tokenExpiry: string): boolean {
+  try {
     const now = Math.floor(Date.now() / 1000);
     const expiry = parseInt(tokenExpiry);
     return now >= expiry;
-  }
-  catch(err){
+  } catch (err) {
     return true;
   }
 }
 
 type Query = string;
 type Path = string;
-type Body = Record<string,unknown>;
+type Body = Record<string, unknown>;
 
 const _getRequest = (query: Query) => () => httpRequest.get(query);
 const _postRequest = (path: Path, body: Body) => () =>
@@ -52,7 +51,7 @@ const ErrorHandler = async (requestHandler: () => void) => {
   try {
     const response = await requestHandler();
     return response;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     const readbleError = err?.toJSON().message;
     console.log(`Http Request Error: ${readbleError}`);

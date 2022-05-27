@@ -1,7 +1,14 @@
 import { USERS } from "consts";
 import * as BaseAPI from "../base";
-import { IUser, IBank } from '../../types';
-import { formatUsers, formatUser, formatBank, formatDeposits, formatWithdrawals, formatTransfers } from '../../formatters/index';
+import { IUser, IBank } from "../../types";
+import {
+  formatUsers,
+  formatUser,
+  formatBank,
+  formatDeposits,
+  formatWithdrawals,
+  formatTransfers,
+} from "../../formatters/index";
 
 export const getAllUsers = async (): Promise<any> => {
   try {
@@ -10,27 +17,33 @@ export const getAllUsers = async (): Promise<any> => {
     return formatUsers(response);
   } catch (err) {
     console.log("err", err);
-    return {}
+    return {};
   }
 };
 
-export const getFundingSource = async (dwollaId: string): Promise<IBank | undefined> => {
+export const getFundingSource = async (
+  dwollaId: string
+): Promise<IBank | undefined> => {
   try {
-    const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}/funding-sources`);
+    const response = await BaseAPI.getRequest(
+      `${USERS}/${dwollaId}/funding-sources`
+    );
 
     return formatBank(response);
   } catch (err) {
     console.log("err", err);
     return undefined;
   }
-}
+};
 
-export const getUserDetail = async (dwollaId: string): Promise<IUser | undefined> => {
+export const getUserDetail = async (
+  dwollaId: string
+): Promise<IUser | undefined> => {
   try {
     const response = await BaseAPI.getRequest(`${USERS}/${dwollaId}`);
     const user = formatUser(response.data[0]);
 
-    return user
+    return user;
   } catch (err) {
     console.log("err", err);
     return undefined;
@@ -46,7 +59,7 @@ export const getUserDeposits = async (dwollaId: string) => {
     console.log("err", err);
     return undefined;
   }
-}
+};
 
 export const getUserWithdrawals = async (dwollaId: string) => {
   try {
@@ -57,7 +70,7 @@ export const getUserWithdrawals = async (dwollaId: string) => {
     console.log("err", err);
     return undefined;
   }
-}
+};
 
 export const getUserTransfers = async (dwollaId: string) => {
   try {
@@ -68,4 +81,4 @@ export const getUserTransfers = async (dwollaId: string) => {
     console.log("err", err);
     return undefined;
   }
-}
+};

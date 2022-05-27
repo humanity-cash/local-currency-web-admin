@@ -1,4 +1,4 @@
-import { OperatorData, IUser, IBank } from '../types';
+import { OperatorData, IUser, IBank } from "../types";
 import {
   AxiosPromiseResponse,
   IACHTransaction,
@@ -18,8 +18,8 @@ const formatTransaction = (tx: any): ITransaction => {
     userId: tx.userId,
     operator: tx.operator,
     value: formatTransactionValue(tx.value),
-  }
-}
+  };
+};
 
 export const formatDeposits = (
   response: AxiosPromiseResponse<[]>
@@ -27,7 +27,7 @@ export const formatDeposits = (
   return response?.data?.map((tx: any) => {
     return {
       ...formatTransaction(tx),
-      type: "Deposit"
+      type: "Deposit",
     };
   });
 };
@@ -38,7 +38,7 @@ export const formatWithdrawals = (
   return response?.data?.map((tx: any) => {
     return {
       ...formatTransaction(tx),
-      type: "Withdraw"
+      type: "Withdraw",
     };
   });
 };
@@ -54,11 +54,11 @@ export const formatOperators = (
       totalWithdrawals: +data.totalWithdrawals,
       currentOutstanding: +data.currentOutstanding,
       deposits: data.deposits.map((tx: any) => {
-        return formatTransaction(tx)
+        return formatTransaction(tx);
       }),
       withdrawals: data.withdrawals.map((tx: any) => {
-        return formatTransaction(tx)
-      })
+        return formatTransaction(tx);
+      }),
     };
   });
 };
@@ -86,7 +86,7 @@ export const formatTransfers = (
 };
 
 export const formatUser = (data: any): IUser => {
-  const detail = data.customer.body
+  const detail = data.customer.body;
   return {
     userId: data.userId,
     address: data.address,
@@ -101,20 +101,18 @@ export const formatUser = (data: any): IUser => {
     status: detail.status,
     created: detail.created,
     correlationId: detail.correlationId,
-    businessName: detail.businessName
-  }
-}
+    businessName: detail.businessName,
+  };
+};
 
-export const formatUsers = (
-  response: AxiosPromiseResponse<[]>
-): any => {
-  const users: any = {}
+export const formatUsers = (response: AxiosPromiseResponse<[]>): any => {
+  const users: any = {};
   response?.data?.forEach((data) => {
-    const user = formatUser(data)
-    users[user.userId] = user
-  })
-  
-  return users
+    const user = formatUser(data);
+    users[user.userId] = user;
+  });
+
+  return users;
 };
 
 export const formatBank = (
@@ -122,7 +120,7 @@ export const formatBank = (
 ): IBank | undefined => {
   if (!res.data) return undefined;
 
-  const sources = res.data?.body?._embedded["funding-sources"]
+  const sources = res.data?.body?._embedded["funding-sources"];
 
   if (sources?.length > 0) {
     for (let i = 0; i < sources.length; i++) {
@@ -133,10 +131,10 @@ export const formatBank = (
           bankAccountType: source.bankAccountType,
           createdAt: source.created,
           name: source.name,
-        }
+        };
       }
     }
   }
-  
+
   return undefined;
 };

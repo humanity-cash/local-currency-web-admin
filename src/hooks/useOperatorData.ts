@@ -2,7 +2,7 @@ import { ACHAPI } from "api";
 import { useEffect } from "react";
 import { useStore } from "react-hookstore";
 import { OPERATOR_DATA_STORE } from "../store";
-import { OperatorDataState } from '../types';
+import { OperatorDataState } from "../types";
 
 const useOperatorData = (): OperatorDataState => {
   const [operatorDataState, setOperatorDataState]: [OperatorDataState, any] =
@@ -13,7 +13,7 @@ const useOperatorData = (): OperatorDataState => {
 
   const updateOperatorData = async () => {
     const data = await ACHAPI.getAllOperators();
-  
+
     setOperatorDataState((pv: any) => ({ ...pv, data: data }));
   };
 

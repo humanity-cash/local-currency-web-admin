@@ -41,7 +41,7 @@ export interface UserData {
   blockchainAddress: string;
   address: string;
   type: "Business" | "Personal";
-  createdAt: string
+  createdAt: string;
 }
 
 export interface BlockchainData {
@@ -73,13 +73,13 @@ export interface ACHData {
 }
 
 export interface OperatorData {
-  operator: string,
-  operatorDisplayName: string,
-  totalDeposits: number,
-  totalWithdrawals: number,
-  currentOutstanding: number,
-  deposits: ITransaction[],
-  withdrawals: ITransaction[]
+  operator: string;
+  operatorDisplayName: string;
+  totalDeposits: number;
+  totalWithdrawals: number;
+  currentOutstanding: number;
+  deposits: ITransaction[];
+  withdrawals: ITransaction[];
 }
 
 export interface ITransaction {

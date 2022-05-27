@@ -4,7 +4,7 @@ import {
   BlockchainDataState,
   ConfigurationState,
   ModalState,
-  OperatorDataState
+  OperatorDataState,
 } from "./types";
 
 export const CONTRACTS_STORE = "contracts_store";
@@ -31,9 +31,9 @@ const operatorStoreInitialState: OperatorDataState = {
 
 const modalStoreInitialState: ModalState = {
   isOpen: false,
-  title: '',
+  title: "",
   modalProps: {},
-  type: '',
+  type: "",
 };
 
 createStore(CONTRACTS_STORE, contractsStoreInitialState);
